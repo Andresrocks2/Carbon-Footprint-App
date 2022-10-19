@@ -1,4 +1,4 @@
-package com.example.myfootprint.ui.home;
+package com.carbongators.myfootprint.ui.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myfootprint.databinding.FragmentHomeBinding;
+import com.carbongators.myfootprint.databinding.FragmentHomeBinding;
 
 public class HomeFragment extends Fragment {
 

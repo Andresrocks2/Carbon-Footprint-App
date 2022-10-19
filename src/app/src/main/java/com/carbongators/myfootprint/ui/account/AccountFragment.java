@@ -1,4 +1,4 @@
-package com.example.myfootprint.ui.account;
+package com.carbongators.myfootprint.ui.account;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myfootprint.databinding.FragmentAccountBinding;
+import com.carbongators.myfootprint.databinding.FragmentAccountBinding;
 
 public class AccountFragment extends Fragment {
 

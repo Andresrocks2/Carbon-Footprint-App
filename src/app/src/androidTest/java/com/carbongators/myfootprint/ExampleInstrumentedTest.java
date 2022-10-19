@@ -1,4 +1,4 @@
-package com.example.myfootprint;
+package com.carbongators.myfootprint;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.myfootprint", appContext.getPackageName());
+        assertEquals("com.carbongators.myfootprint", appContext.getPackageName());
     }
 }

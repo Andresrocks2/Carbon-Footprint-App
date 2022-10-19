@@ -1,4 +1,4 @@
-package com.example.myfootprint;
+package com.carbongators.myfootprint;
 
 import android.os.Bundle;
 
@@ -10,7 +10,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.myfootprint.databinding.ActivityMainBinding;
+import com.carbongators.myfootprint.databinding.ActivityMainBinding;
 
 public class MainActivity extends AppCompatActivity {
 

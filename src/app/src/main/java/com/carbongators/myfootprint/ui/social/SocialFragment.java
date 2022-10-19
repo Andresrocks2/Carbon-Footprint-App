@@ -1,4 +1,4 @@
-package com.example.myfootprint.ui.social;
+package com.carbongators.myfootprint.ui.social;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.myfootprint.databinding.FragmentSocialBinding;
+import com.carbongators.myfootprint.databinding.FragmentSocialBinding;
 
 public class SocialFragment extends Fragment {
 

@@ -1,4 +1,4 @@
-package com.example.myfootprint;
+package com.carbongators.myfootprint;
 
 import org.junit.Test;
 

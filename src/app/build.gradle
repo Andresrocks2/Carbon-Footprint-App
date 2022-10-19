@@ -3,13 +3,13 @@ plugins {
 }
 
 android {
-    namespace 'com.example.myfootprint'
-    compileSdk 32
+    namespace 'com.carbongators.myfootprint'
+    compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.myfootprint"
+        applicationId "com.carbongators.myfootprint"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
