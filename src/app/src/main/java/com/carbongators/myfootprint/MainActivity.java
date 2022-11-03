@@ -1,6 +1,8 @@
 package com.carbongators.myfootprint;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -34,4 +36,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    public void test_onClick(View v){
+        Button button = (Button)findViewById(R.id.test);
+        button.setText("Click Me !");
+    }
 }
