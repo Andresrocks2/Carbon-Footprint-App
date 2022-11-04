@@ -118,12 +118,9 @@ public final class LoginActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_login);
 
-        findViewById(R.id.retry).setOnClickListener((View view) ->
-                mExecutor.submit(this::initializeAppAuth));
+
         findViewById(R.id.start_auth).setOnClickListener((View view) -> startAuth());
 
-        ((EditText)findViewById(R.id.login_hint_value)).addTextChangedListener(
-                new LoginHintChangeHandler());
 
         if (!mConfiguration.isValid()) {
             displayError(mConfiguration.getConfigurationError(), false);
@@ -186,7 +183,6 @@ public final class LoginActivity extends AppCompatActivity {
     void startAuth() {
         displayLoading("Making authorization request");
 
-        mUsePendingIntents = ((CheckBox) findViewById(R.id.pending_intents_checkbox)).isChecked();
 
         // WrongThread inference is incorrect for lambdas
         // noinspection WrongThread
@@ -312,30 +308,7 @@ public final class LoginActivity extends AppCompatActivity {
      */
     @MainThread
     private void configureBrowserSelector() {
-        Spinner spinner = (Spinner) findViewById(R.id.browser_selector);
-        final BrowserSelectionAdapter adapter = new BrowserSelectionAdapter(this);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                BrowserInfo info = adapter.getItem(position);
-                if (info == null) {
-                    mBrowserMatcher = AnyBrowserMatcher.INSTANCE;
-                    return;
-                } else {
-                    mBrowserMatcher = new ExactBrowserMatcher(info.mDescriptor);
-                }
 
-                recreateAuthorizationService();
-                createAuthRequest(getLoginHint());
-                warmUpBrowser();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                mBrowserMatcher = AnyBrowserMatcher.INSTANCE;
-            }
-        });
     }
 
     /**
@@ -409,7 +382,6 @@ public final class LoginActivity extends AppCompatActivity {
         findViewById(R.id.auth_container).setVisibility(View.GONE);
 
         ((TextView)findViewById(R.id.error_description)).setText(error);
-        findViewById(R.id.retry).setVisibility(recoverable ? View.VISIBLE : View.GONE);
     }
 
     // WrongThread inference is incorrect in this case
@@ -489,21 +461,14 @@ public final class LoginActivity extends AppCompatActivity {
         mAuthRequest.set(authRequestBuilder.build());
     }
 
+    // leftover from oauth demo, hopefully it doesnt break something
     private String getLoginHint() {
-        return ((EditText)findViewById(R.id.login_hint_value))
-                .getText()
-                .toString()
-                .trim();
+        return "";
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
-    @SuppressWarnings("deprecation")
+    // leftover from oauth demo, hopefully it doesnt break something
     private int getColorCompat(@ColorRes int color) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return getColor(color);
-        } else {
-            return getResources().getColor(color);
-        }
+        return 0;
     }
 
     /**

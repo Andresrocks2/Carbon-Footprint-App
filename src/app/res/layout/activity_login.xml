@@ -27,8 +27,8 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_gravity="center"
-                app:srcCompat="@drawable/appauth_96dp"
-                android:contentDescription="@string/openid_logo_content_description"/>
+                android:contentDescription="@string/openid_logo_content_description"
+                app:srcCompat="@drawable/logo_round" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -54,12 +54,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
 
-                <ProgressBar
-                    style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:indeterminate="true"/>
-
             </LinearLayout>
 
             <!-- Displayed once the authorization server configuration is resolved -->
@@ -79,57 +73,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/auth_options"
-                    android:layout_marginTop="16dp"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/login_hint_value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="textEmailAddress"
-                        android:hint="@string/login_hint_value"/>
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/account_id_description"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/browser_selector_label"
-                    android:labelFor="@+id/browser_selector"/>
-
-                <Spinner
-                    android:id="@+id/browser_selector"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <CheckBox
-                    android:id="@+id/pending_intents_checkbox"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/use_pending_intents"/>
-
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="@string/auth_settings"
-                    style="@style/Base.TextAppearance.AppCompat.Subhead"/>
 
                 <TextView
                     android:id="@+id/auth_endpoint"
@@ -161,12 +104,6 @@
                     android:layout_marginBottom="8dp"
                     android:layout_gravity="center"
                     style="@style/Base.TextAppearance.AppCompat.Body1"/>
-
-                <Button
-                    android:id="@+id/retry"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/retry_label" />
 
             </LinearLayout>
         </LinearLayout>
