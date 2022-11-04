@@ -1,17 +1,3 @@
-/*
- * Copyright 2015 The AppAuth for Android Authors. All Rights Reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.carbongators.myfootprint;
 
 import android.annotation.TargetApi;
@@ -368,17 +354,14 @@ public final class LoginActivity extends AppCompatActivity {
 
     @MainThread
     private void displayLoading(String loadingMessage) {
-        findViewById(R.id.loading_container).setVisibility(View.VISIBLE);
         findViewById(R.id.auth_container).setVisibility(View.GONE);
         findViewById(R.id.error_container).setVisibility(View.GONE);
 
-        ((TextView)findViewById(R.id.loading_description)).setText(loadingMessage);
     }
 
     @MainThread
     private void displayError(String error, boolean recoverable) {
         findViewById(R.id.error_container).setVisibility(View.VISIBLE);
-        findViewById(R.id.loading_container).setVisibility(View.GONE);
         findViewById(R.id.auth_container).setVisibility(View.GONE);
 
         ((TextView)findViewById(R.id.error_description)).setText(error);
@@ -401,7 +384,6 @@ public final class LoginActivity extends AppCompatActivity {
     @MainThread
     private void displayAuthOptions() {
         findViewById(R.id.auth_container).setVisibility(View.VISIBLE);
-        findViewById(R.id.loading_container).setVisibility(View.GONE);
         findViewById(R.id.error_container).setVisibility(View.GONE);
 
         AuthState state = mAuthStateManager.getCurrent();
@@ -409,7 +391,7 @@ public final class LoginActivity extends AppCompatActivity {
 
         String authEndpointStr;
         if (config.discoveryDoc != null) {
-            authEndpointStr = "Discovered auth endpoint: \n";
+            authEndpointStr = "Auth endpoint: \n";
         } else {
             authEndpointStr = "Static auth endpoint: \n";
         }
