@@ -1,8 +1,12 @@
 package com.carbongators.myfootprint;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -13,6 +17,8 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,7 +43,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void test_onClick(View v){
-        Button button = (Button)findViewById(R.id.test);
-        button.setText("Click Me !");
+
+        EditText editText = (EditText) findViewById(R.id.electricityInput);
+        String text = editText.getText().toString();
+        TextView electricity = (TextView) findViewById(R.id.electricity);
+        electricity.setText("Electricity: " + text);
+
     }
+
 }
