@@ -1,27 +1,32 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
-
 apply plugin: 'checkstyle'
-
+apply from: '../config/android-common.gradle'
+apply from: '../config/keystore.gradle'
 
 android {
-
-    namespace 'com.carbongators.myfootprint'
-
     defaultConfig {
         minSdk = 26
         targetSdk = 33
         compileSdkVersion = 33
 
-
         applicationId 'com.carbongators.myfootprint'
+        project.archivesBaseName = 'appauth-demoapp'
         vectorDrawables.useSupportLibrary = true
 
         // Make sure this is consistent with the redirect URI used in res/raw/auth_config.json,
         // or specify additional redirect URIs in AndroidManifest.xml
         manifestPlaceholders = [
-                'appAuthRedirectScheme': 'com.googleusercontent.apps.224489073535-ehcvbp478kcq3v6sh8du6rdaticojvgq'
+                'appAuthRedirectScheme': 'com.googleusercontent.apps.24489073535-ehcvbp478kcq3v6sh8du6rdaticojvgq'
         ]
+    }
+
+    signingConfigs {
+        debugAndRelease {
+            storeFile file("${rootDir}/appauth.keystore")
+            storePassword "appauth"
+            keyAlias "appauth"
+            keyPassword "appauth"
+        }
     }
 
     compileOptions {
@@ -29,26 +34,26 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debugAndRelease
+        }
+        release {
+            signingConfig signingConfigs.debugAndRelease
+        }
+    }
 }
 
-
-
 dependencies {
-
-
-
     implementation 'net.openid:appauth:0.11.1'
     implementation "androidx.appcompat:appcompat:${project.androidXVersions.appcompat}"
     implementation "androidx.annotation:annotation:${project.androidXVersions.annotation}"
-    implementation "com.google.android.material:material:1.7.0"
+    implementation "com.google.android.material:material:${project.googleVersions.material}"
     implementation "com.github.bumptech.glide:glide:${project.googleVersions.glide}"
     implementation "com.squareup.okio:okio:${project.okioVersion}"
     implementation "joda-time:joda-time:${project.jodaVersion}"
 
     annotationProcessor "com.github.bumptech.glide:compiler:${project.googleVersions.glide}"
-
-    implementation platform('com.google.firebase:firebase-bom:31.0.2')
-    implementation 'com.google.firebase:firebase-analytics'
-
 }
 
+apply from: '../config/style.gradle'
