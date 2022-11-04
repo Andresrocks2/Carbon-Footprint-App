@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name_short">AppAuth</string>
+    <string name="app_name_short">My Footprint</string>
+
     <string name="auth_granted">Authorization granted</string>
     <string name="intro_header">My Footprint</string>
     <string name="openid_logo_content_description">AppAuth Logo</string>
@@ -28,4 +29,9 @@
     <string name="access_token_expired">Access token has expired</string>
     <string name="auth_settings">Authorization settings in use:</string>
     <string name="use_pending_intents">Use PendingIntent\'s for completion</string>
+
+    <string name="app_name">My Footprint</string>
+    <string name="title_home">Home</string>
+    <string name="title_social">Social</string>
+    <string name="title_account">Account</string>
 </resources>
