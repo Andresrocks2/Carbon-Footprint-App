@@ -14,6 +14,7 @@
 
 package com.carbongators.myfootprint.ui.login;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,9 @@ import java.nio.charset.Charset;
 import okio.Buffer;
 import okio.BufferedSource;
 import okio.Okio;
+
+import androidx.appcompat.R;
+
 
 
 /**
@@ -190,21 +194,9 @@ public final class Configuration {
     }
 
     private void readConfiguration() throws InvalidConfigurationException {
-        BufferedSource configSource =
-                Okio.buffer(Okio.source(mResources.openRawResource(R.raw.auth_config)));
-        Buffer configData = new Buffer();
-        try {
-            configSource.readAll(configData);
-            mConfigJson = new JSONObject(configData.readString(Charset.forName("UTF-8")));
-        } catch (IOException ex) {
-            throw new InvalidConfigurationException(
-                    "Failed to read configuration: " + ex.getMessage());
-        } catch (JSONException ex) {
-            throw new InvalidConfigurationException(
-                    "Unable to parse configuration: " + ex.getMessage());
-        }
 
-        mConfigHash = configData.sha256().base64();
+
+        mConfigHash = "1"; // OMEGALUL
         mClientId = getConfigString("client_id");
         mScope = getRequiredConfigString("authorization_scope");
         mRedirectUri = getRequiredConfigUri("redirect_uri");
@@ -237,17 +229,23 @@ public final class Configuration {
 
     @Nullable
     String getConfigString(String propName) {
-        String value = mConfigJson.optString(propName);
-        if (value == null) {
-            return null;
-        }
 
-        value = value.trim();
-        if (TextUtils.isEmpty(value)) {
-            return null;
-        }
 
-        return value;
+        switch (propName) {
+
+            case "client_id":
+                return "24489073535-usja5dvpouiofjlcs2rk9agojopnln6i.apps.googleusercontent.com";
+            case "redirect_uri":
+                return "com.googleusercontent.apps.24489073535-usja5dvpouiofjlcs2rk9agojopnln6i:/oauth2redirect";
+            case "end_session_redirect_uri":
+                return "net.openid.appauthdemo:/oauth2redirect";
+            case "authorization_scope":
+                return "openid email profile";
+            case "discovery_uri":
+                return "https://accounts.google.com/.well-known/openid-configuration";
+            default:
+                return"";
+        }
     }
 
     @NonNull

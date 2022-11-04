@@ -9,6 +9,11 @@ android {
     namespace 'com.carbongators.myfootprint'
 
     defaultConfig {
+        minSdk = 26
+        targetSdk = 33
+        compileSdkVersion = 33
+
+
         applicationId 'com.carbongators.myfootprint'
         vectorDrawables.useSupportLibrary = true
 

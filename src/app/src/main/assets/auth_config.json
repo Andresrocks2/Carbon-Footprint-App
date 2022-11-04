@@ -1,6 +1,6 @@
 {
-  "client_id": "224489073535-ehcvbp478kcq3v6sh8du6rdaticojvgq.apps.googleusercontent.com",
-  "redirect_uri": "com.googleusercontent.apps.224489073535-ehcvbp478kcq3v6sh8du6rdaticojvgq:/oauth2redirect",
+  "client_id": "24489073535-usja5dvpouiofjlcs2rk9agojopnln6i.apps.googleusercontent.com",
+  "redirect_uri": "com.googleusercontent.apps.24489073535-usja5dvpouiofjlcs2rk9agojopnln6i:/oauth2redirect",
   "end_session_redirect_uri": "net.openid.appauthdemo:/oauth2redirect",
   "authorization_scope": "openid email profile",
   "discovery_uri": "https://accounts.google.com/.well-known/openid-configuration",
