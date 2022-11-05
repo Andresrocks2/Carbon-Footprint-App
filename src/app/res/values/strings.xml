@@ -30,8 +30,4 @@
     <string name="auth_settings">Authorization settings in use:</string>
     <string name="use_pending_intents">Use PendingIntent\'s for completion</string>
 
-    <string name="app_name">My Footprint</string>
-    <string name="title_home">Home</string>
-    <string name="title_social">Social</string>
-    <string name="title_account">Account</string>
 </resources>
