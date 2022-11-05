@@ -95,6 +95,10 @@ public class TokenActivity extends AppCompatActivity {
                 Log.e(TAG, "Failed to parse saved user info JSON, discarding", ex);
             }
         }
+
+
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
     }
 
     @Override
@@ -311,7 +315,7 @@ public class TokenActivity extends AppCompatActivity {
     }
 
     /**
-     * Demonstrates the use of {@link AuthState#performActionWithFreshTokens} to retrieve
+     * Demonstrates the use of {@link /AuthState#performActionWithFreshTokens} to retrieve
      * user info from the IDP's user info endpoint. This callback will negotiate a new access
      * token / id token for use in a follow-up action, or provide an error if this fails.
      */
