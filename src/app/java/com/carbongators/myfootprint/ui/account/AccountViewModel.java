@@ -1,16 +1,16 @@
-package com.carbongators.myfootprint.ui.notifications;
+package com.carbongators.myfootprint.ui.account;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class NotificationsViewModel extends ViewModel {
+public class AccountViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public NotificationsViewModel() {
+    public AccountViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is notifications fragment");
+        mText.setValue("This is social fragment");
     }
 
     public LiveData<String> getText() {

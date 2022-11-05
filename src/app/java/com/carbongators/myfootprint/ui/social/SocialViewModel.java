@@ -1,16 +1,16 @@
-package com.carbongators.myfootprint.ui.dashboard;
+package com.carbongators.myfootprint.ui.social;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DashboardViewModel extends ViewModel {
+public class SocialViewModel extends ViewModel {
 
     private final MutableLiveData<String> mText;
 
-    public DashboardViewModel() {
+    public SocialViewModel() {
         mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        mText.setValue("This is account fragment");
     }
 
     public LiveData<String> getText() {
