@@ -50,11 +50,10 @@ public class AccountFragment extends Fragment {
 
         mActivity.fetchUserInfo();
 
-        View userInfoCard = root.findViewById(R.id.userinfo_card);
         JSONObject userInfo = mActivity.mUserInfoJson.get();
 
         if (userInfo == null) {
-            userInfoCard.setVisibility(View.INVISIBLE);
+            //userInfoCard.setVisibility(View.INVISIBLE);
         } else {
             try {
                 String name = "???";
@@ -71,7 +70,7 @@ public class AccountFragment extends Fragment {
                 }
 
                 ((TextView) root.findViewById(R.id.userinfo_json)).setText(userInfo.toString());
-                userInfoCard.setVisibility(View.VISIBLE);
+                //userInfoCard.setVisibility(View.VISIBLE);
             } catch (JSONException ex) {
                 Log.e("AccountFragment", "Failed to read userinfo JSON", ex);
             }
