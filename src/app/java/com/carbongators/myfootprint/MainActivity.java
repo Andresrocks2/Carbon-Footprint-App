@@ -98,6 +98,45 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
     }
 
+    @MainThread
+    public String getUserFirstName() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("given_name")) {
+                try {
+                    return userInfo.getString("given_name");
+                } catch (JSONException e) {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+
+    @MainThread
+    public int getUserToken() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("sub")) {
+                try {
+                    return Integer.parseInt(userInfo.getString("sub"));
+                } catch (JSONException e) {
+                    return -1;
+                }
+            }
+        }
+
+        return -1;
+
+    }
+
 
     @Override
     protected void onStart() {
