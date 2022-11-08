@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/navigation_social"
-        android:name="com.carbongators.myfootprint.ui.account.AccountFragment"
+        android:name="com.carbongators.myfootprint.ui.social.SocialFragment"
         android:label="@string/title_social"
         tools:layout="@layout/fragment_social" />
 
@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/navigation_account"
-        android:name="com.carbongators.myfootprint.ui.social.SocialFragment"
+        android:name="com.carbongators.myfootprint.ui.account.AccountFragment"
         android:label="@string/title_account"
         tools:layout="@layout/fragment_account" />
 </navigation>
