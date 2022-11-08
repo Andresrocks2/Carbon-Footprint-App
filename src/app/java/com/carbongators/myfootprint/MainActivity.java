@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                 .setConnectionBuilder(config.getConnectionBuilder())
                 .build());
 
-        setContentView(R.layout.activity_token);
+        //setContentView(R.layout.activity_token);
         displayLoading("Restoring state...");
 
         if (savedInstanceState != null) {
