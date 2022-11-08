@@ -1,5 +1,6 @@
 package com.carbongators.myfootprint.ui.account;
 
+import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class AccountFragment extends Fragment {
     View root;
 
 
+    @SuppressLint("SetTextI18n")
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         AccountViewModel accountViewModel =
@@ -35,7 +37,9 @@ public class AccountFragment extends Fragment {
         binding = FragmentAccountBinding.inflate(inflater, container, false);
         root = binding.getRoot();
 
+
         MainActivity mActivity = (MainActivity) requireActivity();
+        mActivity.fetchUserInfo();
 
 
         Button signOutButton = (Button) root.findViewById(R.id.sign_out);
@@ -45,16 +49,15 @@ public class AccountFragment extends Fragment {
         TextView tokenExpiresAtText = (TextView) root.findViewById(R.id.token_expires_at);
 
 
+        //tokenExpiresAtText.setText(mActivity.getUserFirstName());
+
+
         tokenExpiresAtText.setText(mActivity.getAccessTokenExp());
 
 
-        mActivity.fetchUserInfo();
-
         JSONObject userInfo = mActivity.mUserInfoJson.get();
 
-        if (userInfo == null) {
-            //userInfoCard.setVisibility(View.INVISIBLE);
-        } else {
+        if (userInfo != null) {
             try {
                 String name = "???";
                 if (userInfo.has("name")) {
@@ -75,6 +78,8 @@ public class AccountFragment extends Fragment {
                 Log.e("AccountFragment", "Failed to read userinfo JSON", ex);
             }
         }
+
+
 
 
 
