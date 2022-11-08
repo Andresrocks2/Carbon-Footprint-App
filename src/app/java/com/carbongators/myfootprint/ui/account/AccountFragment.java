@@ -45,7 +45,7 @@ public class AccountFragment extends Fragment {
         TextView tokenExpiresAtText = (TextView) root.findViewById(R.id.token_expires_at);
 
 
-        tokenExpiresAtText.setText(mActivity.getAccessTokenInfo());
+        tokenExpiresAtText.setText(mActivity.getAccessTokenExp());
 
 
         mActivity.fetchUserInfo();

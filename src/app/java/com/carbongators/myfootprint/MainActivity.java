@@ -12,9 +12,6 @@ import androidx.navigation.ui.NavigationUI;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.MainThread;
@@ -159,14 +156,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public CharSequence getAccessTokenInfo(){
+    public String getAccessTokenExp(){
 
-        TextView accessTokenInfoView = (TextView) findViewById(R.id.access_token_info);
-
-        return accessTokenInfoView.getText();
+        return accessTokenExp;
     }
 
-
+    public String accessTokenExp;
 
     @MainThread
     private void displayAuthorized() {
@@ -175,53 +170,24 @@ public class MainActivity extends AppCompatActivity {
         AuthState state = mStateManager.getCurrent();
 
 
-
-        TextView accessTokenInfoView = (TextView) findViewById(R.id.access_token_info);
-
         if (state.getAccessToken() == null) {
-            accessTokenInfoView.setText(R.string.no_access_token_returned);
+            accessTokenExp = String.valueOf(R.string.no_access_token_returned);
         } else {
             Long expiresAt = state.getAccessTokenExpirationTime();
             if (expiresAt == null) {
-                accessTokenInfoView.setText(R.string.no_access_token_expiry);
+                accessTokenExp = String.valueOf(R.string.no_access_token_expiry);
             } else if (expiresAt < System.currentTimeMillis()) {
-                accessTokenInfoView.setText(R.string.access_token_expired);
+                accessTokenExp = String.valueOf(R.string.access_token_expired);
             } else {
                 String template = getResources().getString(R.string.access_token_expires_at);
-                accessTokenInfoView.setText(String.format(template,
-                    DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss ZZ").print(expiresAt)));
+                accessTokenExp = String.format(template,
+                    DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss ZZ").print(expiresAt));
             }
         }
 
+        fetchUserInfo();
 
-        AuthorizationServiceDiscovery discoveryDoc =
-            state.getAuthorizationServiceConfiguration().discoveryDoc;
 
-        View userInfoCard = findViewById(R.id.userinfo_card);
-        JSONObject userInfo = mUserInfoJson.get();
-        if (userInfo == null) {
-            userInfoCard.setVisibility(View.INVISIBLE);
-        } else {
-            try {
-                String name = "???";
-                if (userInfo.has("name")) {
-                    name = userInfo.getString("name");
-                }
-                ((TextView) findViewById(R.id.userinfo_name)).setText(name);
-
-                if (userInfo.has("picture")) {
-                    GlideApp.with(MainActivity.this)
-                        .load(Uri.parse(userInfo.getString("picture")))
-                        .fitCenter()
-                        .into((ImageView) findViewById(R.id.userinfo_profile));
-                }
-
-                ((TextView) findViewById(R.id.userinfo_json)).setText(mUserInfoJson.toString());
-                userInfoCard.setVisibility(View.VISIBLE);
-            } catch (JSONException ex) {
-                Log.e(TAG, "Failed to read userinfo JSON", ex);
-            }
-        }
     }
 
     @MainThread
