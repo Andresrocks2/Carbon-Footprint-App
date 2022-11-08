@@ -53,7 +53,7 @@ import okio.Okio;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-    private static final String TAG = "TokenActivity";
+    private static final String TAG = "MainActivity";
 
     private static final String KEY_USER_INFO = "userInfo";
 
