@@ -24,11 +24,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".TokenActivity"
-            android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity
             android:name=".MainActivity"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden"

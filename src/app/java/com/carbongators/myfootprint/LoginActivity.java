@@ -97,7 +97,7 @@ public final class LoginActivity extends AppCompatActivity {
         if (mAuthStateManager.getCurrent().isAuthorized()
                 && !mConfiguration.hasConfigurationChanged()) {
             Log.i(TAG, "User is already authenticated, proceeding to token activity");
-            startActivity(new Intent(this, TokenActivity.class));
+            startActivity(new Intent(this, MainActivity.class));
             finish();
             return;
         }
@@ -159,7 +159,7 @@ public final class LoginActivity extends AppCompatActivity {
         if (resultCode == RESULT_CANCELED) {
             displayAuthCancelled();
         } else {
-            Intent intent = new Intent(this, TokenActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             intent.putExtras(data.getExtras());
             startActivity(intent);
         }
@@ -310,8 +310,8 @@ public final class LoginActivity extends AppCompatActivity {
         }
 
         if (mUsePendingIntents) {
-            final Intent completionIntent = new Intent(this, TokenActivity.class);
-            final Intent cancelIntent = new Intent(this, LoginActivity.class);
+            final Intent completionIntent = new Intent(this, MainActivity.class);
+            final Intent cancelIntent = new Intent(this, MainActivity.class);
             cancelIntent.putExtra(EXTRA_FAILED, true);
             cancelIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
