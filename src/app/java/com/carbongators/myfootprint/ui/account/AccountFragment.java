@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.carbongators.myfootprint.databinding.FragmentSocialBinding;
+import com.carbongators.myfootprint.databinding.FragmentAccountBinding;
 
 public class AccountFragment extends Fragment {
 
-    private FragmentSocialBinding binding;
+    private FragmentAccountBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        AccountViewModel socialViewModel =
+        AccountViewModel accountViewModel =
                 new ViewModelProvider(this).get(AccountViewModel.class);
 
-        binding = FragmentSocialBinding.inflate(inflater, container, false);
+        binding = FragmentAccountBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textSocial;
-        socialViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textAccount;
+        accountViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
