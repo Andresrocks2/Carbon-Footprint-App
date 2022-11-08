@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
     private AuthorizationService mAuthService;
     private AuthStateManager mStateManager;
-    private final AtomicReference<JSONObject> mUserInfoJson = new AtomicReference<>();
+    public final AtomicReference<JSONObject> mUserInfoJson = new AtomicReference<>();
     private ExecutorService mExecutor;
     private Configuration mConfiguration;
 
@@ -159,6 +159,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public CharSequence getAccessTokenInfo(){
+
+        TextView accessTokenInfoView = (TextView) findViewById(R.id.access_token_info);
+
+        return accessTokenInfoView.getText();
+    }
+
 
 
     @MainThread
@@ -185,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
                     DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss ZZ").print(expiresAt)));
             }
         }
-
 
 
         AuthorizationServiceDiscovery discoveryDoc =
@@ -255,7 +261,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @MainThread
-    private void fetchUserInfo() {
+    public void fetchUserInfo() {
         mStateManager.getCurrent().performActionWithFreshTokens(mAuthService, this::fetchUserInfo);
     }
 
