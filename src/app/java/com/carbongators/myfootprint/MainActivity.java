@@ -1,12 +1,16 @@
 package com.carbongators.myfootprint;
 
 import android.annotation.SuppressLint;
+<<<<<<< HEAD
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.graphics.Color;
 import android.os.Build;
+=======
+import android.graphics.Color;
+>>>>>>> Andres
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -131,6 +135,7 @@ public class MainActivity extends AppCompatActivity {
         //String greeting = "Hi, " + getUserFirstName();
         //(TextView) findViewById(R.id.textView3)).setText(greeting);
 
+<<<<<<< HEAD
         //Notification to be sent when button6 is clicked
         Button button6 = (Button) findViewById(R.id.button6);
         button6.setOnClickListener(v -> {
@@ -148,6 +153,8 @@ public class MainActivity extends AppCompatActivity {
             alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + oneDayInMillis, pendingIntent);
         });
 
+=======
+>>>>>>> Andres
 
     }
 
@@ -437,6 +444,62 @@ public class MainActivity extends AppCompatActivity {
         String footPrintString = ""+footPrint;
         ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
         ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+<<<<<<< HEAD
+=======
+
+        homeScreen.setVisibility(View.VISIBLE);
+        questions.setVisibility(View.GONE);
+    }
+    public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
+    {
+        double totalHouseHoldFPrint = 0; //in lbs
+        totalHouseHoldFPrint += nGasUse*119.58;
+        totalHouseHoldFPrint += elecUse*14.4215172;
+        totalHouseHoldFPrint += oilUse*22.61;
+        totalHouseHoldFPrint += propUse*12.43;
+        return totalHouseHoldFPrint;
+    }
+    public static double transportFootprint(int zip, double milesPerWeek, double milesPerGallon) //handles the list outside
+    {
+        double totalOutput = 0;
+        totalOutput += 4*milesPerWeek*milesPerGallon;
+        return totalOutput;
+    }
+    public static double wasteFootprint(int zip, boolean[] recycleList)
+    {
+        double totalWasteFootprint = 0;
+        if(recycleList[0])
+        {
+            totalWasteFootprint -= 89.38/12;
+        }
+        if(recycleList[1])
+        {
+            totalWasteFootprint -= 35.56/12;
+        }
+        if(recycleList[2])
+        {
+            totalWasteFootprint -= 25.39/12;
+        }
+        if(recycleList[3])
+        {
+            totalWasteFootprint -= 113.14/12;
+        }
+        if(recycleList[4])
+        {
+            totalWasteFootprint -= 27.46/12;
+        }
+        return totalWasteFootprint;
+    }
+    public static int calcTotalFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse, double milesPerWeek, double milesPerGallon, boolean maintenance, boolean[] recycleList)
+    {
+        double totalFootprint = 0;
+        totalFootprint += houseHoldFootprint(zip, nGasUse, elecUse, oilUse, propUse);
+        totalFootprint += transportFootprint(zip, milesPerWeek, milesPerGallon);
+        totalFootprint += wasteFootprint(zip, recycleList);
+        int totalOutput = (int)totalFootprint;
+        return totalOutput;
+    }
+>>>>>>> Andres
 
         homeScreen.setVisibility(View.VISIBLE);
         questions.setVisibility(View.GONE);
