@@ -1,6 +1,5 @@
 package com.carbongators.myfootprint;
 
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -40,7 +39,6 @@ import okio.Okio;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -106,8 +104,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        fetchUserInfo();
-
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -121,8 +117,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Change the text at the top of screen to say "Hi, " + user first name
         //DOES NOT WORK YET
-        //String greeting = "Hi, " + getUserFirstName();
-        //(TextView) findViewById(R.id.textView3)).setText(greeting);
+        String greeting = "Hi, " + "Andres";
+        ((TextView) findViewById(R.id.textView3)).setText(greeting);
 
 
     }
@@ -137,12 +133,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     return userInfo.getString("given_name");
                 } catch (JSONException e) {
-                    return "";
+                    return null;
                 }
             }
         }
 
-        return "";
+        return null;
 
     }
 
@@ -231,14 +227,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String accessTokenExp;
 
-    @SuppressLint("SetTextI18n")
     @MainThread
     private void displayAuthorized() {
 
 
         AuthState state = mStateManager.getCurrent();
 
-        fetchUserInfo();
 
         if (state.getAccessToken() == null) {
             accessTokenExp = String.valueOf(R.string.no_access_token_returned);
@@ -255,17 +249,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        try {
-            TextView greetingText = (TextView) findViewById(R.id.textView3);
-
-            String temp = "Hi, " + getUserFirstName();
-
-            greetingText.setText(temp);
-        } catch (Exception E) {
-
-        }
-
-
+        fetchUserInfo();
 
 
     }
