@@ -1,9 +1,11 @@
 package com.carbongators.myfootprint;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -12,6 +14,9 @@ import androidx.navigation.ui.NavigationUI;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.MainThread;
@@ -60,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
     private ExecutorService mExecutor;
     private Configuration mConfiguration;
 
+    // Global variables to calculate carbon footprint
+    public double gas = 0;
+    public double electricity = 0;
+    public double oil = 0;
+    public double propane= 0;
+    public double milesDriven= 0;
+    public double mileage= 0;
+    public boolean maintenance;
+    public boolean[] recyclable = new boolean[5];
+
+    // Default value is -1
+    public int footPrint = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,6 +114,13 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_activity_main);
         //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(binding.navView, navController);
+
+        // Change the text at the top of screen to say "Hi, " + user first name
+        //DOES NOT WORK YET
+        String greeting = "Hi, " + "Andres";
+        ((TextView) findViewById(R.id.textView3)).setText(greeting);
+
+
     }
 
     @MainThread
@@ -344,8 +369,86 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(this::displayAuthorized);
     }
 
+    public void button5_onClick(View v){
+        ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
+        ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+        homeScreen.setVisibility(View.GONE);
+        questions.setVisibility(View.VISIBLE);
+    }
+    public void button6_onClick(View v){
+        ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
+        ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+        gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
+        electricity = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal8)).getText().toString());
+        oil = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal9)).getText().toString());
+        propane = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal10)).getText().toString());
+        milesDriven = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal11)).getText().toString());
+        mileage = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal12)).getText().toString());
+        maintenance = ((CheckBox) findViewById(R.id.checkBox4)).isChecked();
 
+        recyclable[0] = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
+        recyclable[1] = ((CheckBox) findViewById(R.id.checkBox3)).isChecked();
+        recyclable[2] = ((CheckBox) findViewById(R.id.checkBox5)).isChecked();
+        recyclable[3] = ((CheckBox) findViewById(R.id.checkBox6)).isChecked();
+        recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
 
+        footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
 
+        String footPrintString = ""+footPrint;
+        ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
+        ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+
+        homeScreen.setVisibility(View.VISIBLE);
+        questions.setVisibility(View.GONE);
+    }
+    public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
+    {
+        double totalHouseHoldFPrint = 0; //in lbs
+        totalHouseHoldFPrint += nGasUse*119.58;
+        totalHouseHoldFPrint += elecUse*14.4215172;
+        totalHouseHoldFPrint += oilUse*22.61;
+        totalHouseHoldFPrint += propUse*12.43;
+        return totalHouseHoldFPrint;
+    }
+    public static double transportFootprint(int zip, double milesPerWeek, double milesPerGallon) //handles the list outside
+    {
+        double totalOutput = 0;
+        totalOutput += 4*milesPerWeek*milesPerGallon;
+        return totalOutput;
+    }
+    public static double wasteFootprint(int zip, boolean[] recycleList)
+    {
+        double totalWasteFootprint = 0;
+        if(recycleList[0])
+        {
+            totalWasteFootprint -= 89.38/12;
+        }
+        if(recycleList[1])
+        {
+            totalWasteFootprint -= 35.56/12;
+        }
+        if(recycleList[2])
+        {
+            totalWasteFootprint -= 25.39/12;
+        }
+        if(recycleList[3])
+        {
+            totalWasteFootprint -= 113.14/12;
+        }
+        if(recycleList[4])
+        {
+            totalWasteFootprint -= 27.46/12;
+        }
+        return totalWasteFootprint;
+    }
+    public static int calcTotalFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse, double milesPerWeek, double milesPerGallon, boolean maintenance, boolean[] recycleList)
+    {
+        double totalFootprint = 0;
+        totalFootprint += houseHoldFootprint(zip, nGasUse, elecUse, oilUse, propUse);
+        totalFootprint += transportFootprint(zip, milesPerWeek, milesPerGallon);
+        totalFootprint += wasteFootprint(zip, recycleList);
+        int totalOutput = (int)totalFootprint;
+        return totalOutput;
+    }
 
 }
