@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "24489073535",
+    "project_id": "my-footprint-366018",
+    "storage_bucket": "my-footprint-366018.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:24489073535:android:7d80c00848c8480c1a984a",
+        "android_client_info": {
+          "package_name": "com.carbongators.myfootprint"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "24489073535-ehcvbp478kcq3v6sh8du6rdaticojvgq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.carbongators.myfootprint",
+            "certificate_hash": "f07fce8ee58248214ed39edcfd8f6bea09ad8417"
+          }
+        },
+        {
+          "client_id": "24489073535-j6s0ebr9a7vlv8gk3m6onub7b6uc57p1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6Phx4szlgcUsgooQblA6LDj-4qLcf240"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "24489073535-j6s0ebr9a7vlv8gk3m6onub7b6uc57p1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

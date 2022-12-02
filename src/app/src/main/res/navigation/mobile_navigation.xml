@@ -6,16 +6,16 @@
     app:startDestination="@+id/navigation_home">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="com.carbongators.myfootprint.ui.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
         android:id="@+id/navigation_social"
         android:name="com.carbongators.myfootprint.ui.social.SocialFragment"
         android:label="@string/title_social"
         tools:layout="@layout/fragment_social" />
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.carbongators.myfootprint.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_account"
