@@ -371,13 +371,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void button5_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
-        ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+        ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.homeEnergyScreen);
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
     }
     public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
-        ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+        ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.recyclingScreen);
         gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
         electricity = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal8)).getText().toString());
         oil = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal9)).getText().toString());
@@ -400,6 +400,36 @@ public class MainActivity extends AppCompatActivity {
 
         homeScreen.setVisibility(View.VISIBLE);
         questions.setVisibility(View.GONE);
+    }
+    public void back1_onClick(View v){
+        ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
+        ConstraintLayout homeEnergyquestions = (ConstraintLayout)findViewById(R.id.homeEnergyScreen);
+        homeScreen.setVisibility(View.VISIBLE);
+        homeEnergyquestions.setVisibility(View.GONE);
+    }
+    public void next1_onClick(View v){
+        ConstraintLayout transportationScreen = (ConstraintLayout)findViewById(R.id.transportationScreen);
+        ConstraintLayout homeEnergyquestions = (ConstraintLayout)findViewById(R.id.homeEnergyScreen);
+        transportationScreen.setVisibility(View.VISIBLE);
+        homeEnergyquestions.setVisibility(View.GONE);
+    }
+    public void back2_onClick(View v){
+        ConstraintLayout homeEnergyScreen = (ConstraintLayout)findViewById(R.id.homeEnergyScreen);
+        ConstraintLayout transportationScreen = (ConstraintLayout)findViewById(R.id.transportationScreen);
+        homeEnergyScreen.setVisibility(View.VISIBLE);
+        transportationScreen.setVisibility(View.GONE);
+    }
+    public void next2_onClick(View v){
+        ConstraintLayout transportationScreen = (ConstraintLayout)findViewById(R.id.transportationScreen);
+        ConstraintLayout recyclingScreen = (ConstraintLayout)findViewById(R.id.recyclingScreen);
+        transportationScreen.setVisibility(View.GONE);
+        recyclingScreen.setVisibility(View.VISIBLE);
+    }
+    public void back3_onClick(View v){
+        ConstraintLayout transportationScreen = (ConstraintLayout)findViewById(R.id.transportationScreen);
+        ConstraintLayout recyclingScreen = (ConstraintLayout)findViewById(R.id.recyclingScreen);
+        transportationScreen.setVisibility(View.VISIBLE);
+        recyclingScreen.setVisibility(View.GONE);
     }
     public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
     {

@@ -24,7 +24,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/homeScreen"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -70,8 +71,9 @@
                         android:id="@+id/button5"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:backgroundTint="@color/colorPrimary"
                         android:onClick="button5_onClick"
-                        android:text="Calculate"
+                        android:text="Calculate Footprint!"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.498"
@@ -101,175 +103,328 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/questionsScreen"
+        android:id="@+id/homeEnergyScreen"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="79dp"
+                android:gravity="center"
+                android:text="Calculating Footprint"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="match_parent"
+                android:layout_height="133dp"
+                android:gravity="bottom|center"
+                android:text="Home Energy"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="73dp"
+                android:gravity="center"
+                android:text="Enter your average monthly kwH for each source of energy your household uses."
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="Electricity" />
+
+            <EditText
+                android:id="@+id/editTextNumberDecimal7"
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:hint="Enter here"
+                android:inputType="numberDecimal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="Natural Gas" />
+
+            <EditText
+                android:id="@+id/editTextNumberDecimal8"
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:hint="Enter here"
+                android:inputType="numberDecimal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="Fuel Oil" />
+
+            <EditText
+                android:id="@+id/editTextNumberDecimal9"
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:hint="Enter here"
+                android:inputType="numberDecimal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:gravity="center"
+                android:text="Propane" />
+
+            <EditText
+                android:id="@+id/editTextNumberDecimal10"
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:hint="Enter here"
+                android:inputType="numberDecimal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/back1"
+                    android:layout_width="205dp"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:onClick="back1_onClick"
+                    android:text="Back" />
+
+                <Button
+                    android:id="@+id/next1"
+                    android:layout_width="206dp"
+                    android:layout_height="49dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:onClick="next1_onClick"
+                    android:text="Next" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/transportationScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="match_parent"
+                android:layout_height="79dp"
+                android:gravity="center"
+                android:text="Calculating Footprint"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="133dp"
+                android:gravity="bottom|center"
+                android:text="Transportation"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="30sp" />
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:gravity="center"
+                android:text="Gas Mileage of Vehicle"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/editTextNumberDecimal12"
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:hint="Enter mpg"
+                android:inputType="numberDecimal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:gravity="center"
+                android:text="Average miles driven per week"
+                android:textSize="20sp" />
+
+            <EditText
+                android:id="@+id/editTextNumberDecimal11"
+                android:layout_width="105dp"
+                android:layout_height="40dp"
+                android:background="@drawable/custom_input"
+                android:ems="10"
+                android:hint="Enter here"
+                android:inputType="numberDecimal"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp" />
+
+            <CheckBox
+                android:id="@+id/checkBox4"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:text="Do you perform maintenance on your vehicle?"
+                android:textSize="20sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/back2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:onClick="back2_onClick"
+                    android:text="Back" />
+
+                <Button
+                    android:id="@+id/next2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:onClick="next2_onClick"
+                    android:text="Next" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/recyclingScreen"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView17"
+                android:layout_width="match_parent"
+                android:layout_height="79dp"
+                android:gravity="center"
+                android:text="Calculating Footprint"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="35sp" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="match_parent"
+                android:layout_height="133dp"
+                android:gravity="bottom|center"
+                android:text="Recycling"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="30sp" />
+
+            <CheckBox
+                android:id="@+id/checkBox7"
+                android:layout_width="257dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:text="Do you recycle magazines?  " />
 
-                <TextView
-                    android:id="@+id/textView20"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Home Energy"
-                    android:textColor="#000000"
-                    android:textSize="25sp" />
+            <CheckBox
+                android:id="@+id/checkBox5"
+                android:layout_width="258dp"
+                android:layout_height="wrap_content"
+                android:text="Do you recycle glass? " />
 
-                <TextView
-                    android:id="@+id/textView8"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Enter your average monthly kwH for each source of energy your household uses." />
+            <CheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="257dp"
+                android:layout_height="wrap_content"
+                android:text="Do you recycle plastic? " />
 
-                <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Electricity" />
+            <CheckBox
+                android:id="@+id/checkBox6"
+                android:layout_width="258dp"
+                android:layout_height="wrap_content"
+                android:text="Do you recycle newspapers? " />
 
-                <EditText
-                    android:id="@+id/editTextNumberDecimal7"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="numberDecimal" />
+            <CheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Do you recycle aluminum and steel? " />
 
-                <TextView
-                    android:id="@+id/textView10"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Natural Gas" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/editTextNumberDecimal8"
-                    android:layout_width="105dp"
+                <Button
+                    android:id="@+id/back3"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="numberDecimal" />
-
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Fuel Oil" />
-
-                <EditText
-                    android:id="@+id/editTextNumberDecimal9"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="numberDecimal" />
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Propane" />
-
-                <EditText
-                    android:id="@+id/editTextNumberDecimal10"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="numberDecimal" />
-
-                <TextView
-                    android:id="@+id/textView15"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Transportation"
-                    android:textColor="#000000"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Average miles driven per week" />
-
-                <EditText
-                    android:id="@+id/editTextNumberDecimal11"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="numberDecimal" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Gas Mileage of Vehicle" />
-
-                <EditText
-                    android:id="@+id/editTextNumberDecimal12"
-                    android:layout_width="105dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="numberDecimal" />
-
-                <CheckBox
-                    android:id="@+id/checkBox4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Do you perform maintenance on your vehicle?" />
-
-                <TextView
-                    android:id="@+id/textView19"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Recycling"
-                    android:textColor="#000000"
-                    android:textSize="25sp" />
-
-                <CheckBox
-                    android:id="@+id/checkBox2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Do you recycle aluminum and steel? " />
-
-                <CheckBox
-                    android:id="@+id/checkBox3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Do you recycle plastic? " />
-
-                <CheckBox
-                    android:id="@+id/checkBox5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Do you recycle glass? " />
-
-                <CheckBox
-                    android:id="@+id/checkBox6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Do you recycle newspapers? " />
-
-                <CheckBox
-                    android:id="@+id/checkBox7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Do you recycle magazines?  " />
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimaryDark"
+                    android:onClick="back3_onClick"
+                    android:text="Back" />
 
                 <Button
                     android:id="@+id/button6"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimary"
                     android:onClick="button6_onClick"
                     android:text="Calculate!" />
             </LinearLayout>
-        </ScrollView>
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
