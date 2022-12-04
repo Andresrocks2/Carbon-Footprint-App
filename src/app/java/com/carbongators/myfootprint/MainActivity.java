@@ -1,5 +1,6 @@
 package com.carbongators.myfootprint;
 
+<<<<<<< HEAD
 import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
@@ -7,6 +8,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.graphics.Color;
 import android.os.Build;
+=======
+>>>>>>> main
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -48,7 +51,6 @@ import okio.Okio;
 import org.joda.time.format.DateTimeFormat;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -114,8 +116,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        fetchUserInfo();
-
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -129,12 +129,17 @@ public class MainActivity extends AppCompatActivity {
 
         // Change the text at the top of screen to say "Hi, " + user first name
         //DOES NOT WORK YET
+<<<<<<< HEAD
         //String greeting = "Hi, " + getUserFirstName();
         //(TextView) findViewById(R.id.textView3)).setText(greeting);
         //Notification to be sent when button6 is clicked
         Button button6 = (Button) findViewById(R.id.button6);
         button6.setOnClickListener(v -> {
             Toast.makeText(this, "Data Entered!", Toast.LENGTH_SHORT).show();
+=======
+        String greeting = "Hi, " + "Andres";
+        ((TextView) findViewById(R.id.textView3)).setText(greeting);
+>>>>>>> main
 
             Intent intent = new Intent(MainActivity.this,ReminderBroadcast.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0 | PendingIntent.FLAG_IMMUTABLE);
@@ -160,12 +165,12 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     return userInfo.getString("given_name");
                 } catch (JSONException e) {
-                    return "";
+                    return null;
                 }
             }
         }
 
-        return "";
+        return null;
 
     }
 
@@ -254,14 +259,12 @@ public class MainActivity extends AppCompatActivity {
 
     public String accessTokenExp;
 
-    @SuppressLint("SetTextI18n")
     @MainThread
     private void displayAuthorized() {
 
 
         AuthState state = mStateManager.getCurrent();
 
-        fetchUserInfo();
 
         if (state.getAccessToken() == null) {
             accessTokenExp = String.valueOf(R.string.no_access_token_returned);
@@ -278,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+<<<<<<< HEAD
         try {
             TextView greetingText = (TextView) findViewById(R.id.textView3);
 
@@ -287,6 +291,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (Exception E) {
 
         }
+=======
+        fetchUserInfo();
+
+
+>>>>>>> main
     }
 
     @MainThread
