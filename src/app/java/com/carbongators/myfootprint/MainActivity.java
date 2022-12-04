@@ -3,6 +3,14 @@ package com.carbongators.myfootprint;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.ekn.gruzer.gaugelibrary.ArcGauge;
+import com.ekn.gruzer.gaugelibrary.Range;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -43,9 +51,11 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
+import java.lang.Math;
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
 
@@ -78,10 +88,12 @@ public class MainActivity extends AppCompatActivity {
     // Default value is -1
     public int footPrint = -1;
 
+    ArcGauge arcGauge;
+    com.ekn.gruzer.gaugelibrary.Range range1, range2, range3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mStateManager = AuthStateManager.getInstance(this);
         mExecutor = Executors.newSingleThreadExecutor();
         mConfiguration = Configuration.getInstance(this);
@@ -104,7 +116,6 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-
         BottomNavigationView navView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -119,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
         //DOES NOT WORK YET
         String greeting = "Hi, " + "Andres";
         ((TextView) findViewById(R.id.textView3)).setText(greeting);
-
 
     }
 
@@ -166,6 +176,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        arcGauge = findViewById(R.id.arcGuage);
+        arcGauge.setMinValue(0);
+        arcGauge.setMaxValue(1000);
+
+        range1 = new Range();
+        range1.setFrom(0);
+        range1.setTo(333);
+        range1.setColor(Color.RED);
+        arcGauge.addRange(range1);
+
+        range2 = new Range();
+        range2.setFrom(333);
+        range2.setTo(666);
+        range2.setColor(Color.YELLOW);
+        arcGauge.addRange(range2);
+
+        range3 = new Range();
+        range3.setFrom(666);
+        range3.setTo(1000);
+        range3.setColor(Color.GREEN);
+        arcGauge.addRange(range3);
 
         if (mExecutor.isShutdown()) {
             mExecutor = Executors.newSingleThreadExecutor();
@@ -393,11 +425,11 @@ public class MainActivity extends AppCompatActivity {
         recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
 
         footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
+        int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 10000));
 
-        String footPrintString = ""+footPrint;
-        ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
-        ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+        arcGauge.setValue(score);
 
+        ((TextView) findViewById(R.id.textView5)).setVisibility(View.GONE);
         homeScreen.setVisibility(View.VISIBLE);
         questions.setVisibility(View.GONE);
     }
@@ -450,5 +482,4 @@ public class MainActivity extends AppCompatActivity {
         int totalOutput = (int)totalFootprint;
         return totalOutput;
     }
-
 }

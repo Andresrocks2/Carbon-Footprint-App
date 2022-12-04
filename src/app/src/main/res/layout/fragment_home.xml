@@ -58,13 +58,13 @@
                     <TextView
                         android:id="@+id/textView5"
                         android:layout_width="413dp"
-                        android:layout_height="200dp"
+                        android:layout_height="100dp"
                         android:gravity="center"
                         android:text="No Score Yet!"
                         android:textColor="#F44336"
                         android:textSize="30sp"
-                        tools:layout_editor_absoluteX="0dp"
-                        tools:layout_editor_absoluteY="1dp" />
+                        app:layout_constraintBottom_toTopOf="@+id/button5"
+                        tools:layout_editor_absoluteX="-1dp" />
 
                     <Button
                         android:id="@+id/button5"
@@ -74,10 +74,20 @@
                         android:text="Calculate"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.533" />
+                        app:layout_constraintVertical_bias="1.0" />
+
+                    <com.ekn.gruzer.gaugelibrary.ArcGauge
+                        android:id="@+id/arcGuage"
+                        android:layout_width="350dp"
+                        android:layout_height="225dp"
+                        android:layout_marginBottom="144dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/textView5"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.491"
+                        app:layout_constraintStart_toStartOf="parent" />
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
