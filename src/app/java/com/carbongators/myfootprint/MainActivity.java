@@ -1,6 +1,5 @@
 package com.carbongators.myfootprint;
 
-import android.annotation.SuppressLint;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -129,12 +128,11 @@ public class MainActivity extends AppCompatActivity {
         //String greeting = "Hi, " + getUserFirstName();
         //(TextView) findViewById(R.id.textView3)).setText(greeting);
         //Notification to be sent when button6 is clicked
+        String greeting = "Hi, " + "Andres";
+        ((TextView) findViewById(R.id.textView3)).setText(greeting);
         Button button6 = (Button) findViewById(R.id.button6);
         button6.setOnClickListener(v -> {
             Toast.makeText(this, "Data Entered!", Toast.LENGTH_SHORT).show();
-        String greeting = "Hi, " + "Andres";
-        ((TextView) findViewById(R.id.textView3)).setText(greeting);
-
             Intent intent = new Intent(MainActivity.this,ReminderBroadcast.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0 | PendingIntent.FLAG_IMMUTABLE);
 
