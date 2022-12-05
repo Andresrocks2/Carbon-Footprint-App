@@ -131,18 +131,42 @@ public class MainActivity extends AppCompatActivity {
         String greeting = "Hi, " + "Andres";
         ((TextView) findViewById(R.id.textView3)).setText(greeting);
         Button button6 = (Button) findViewById(R.id.button6);
+        createNotificationChannel();
         button6.setOnClickListener(v -> {
+            ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
+            ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+            gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
+            electricity = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal8)).getText().toString());
+            oil = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal9)).getText().toString());
+            propane = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal10)).getText().toString());
+            milesDriven = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal11)).getText().toString());
+            mileage = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal12)).getText().toString());
+            maintenance = ((CheckBox) findViewById(R.id.checkBox4)).isChecked();
+
+            recyclable[0] = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
+            recyclable[1] = ((CheckBox) findViewById(R.id.checkBox3)).isChecked();
+            recyclable[2] = ((CheckBox) findViewById(R.id.checkBox5)).isChecked();
+            recyclable[3] = ((CheckBox) findViewById(R.id.checkBox6)).isChecked();
+            recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
+
+            footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
+
+            String footPrintString = ""+footPrint;
+            ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
+            ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+            homeScreen.setVisibility(View.VISIBLE);
+            questions.setVisibility(View.GONE);
+
             Toast.makeText(this, "Data Entered!", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(MainActivity.this,ReminderBroadcast.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, 0 | PendingIntent.FLAG_IMMUTABLE);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
             long timeAtButtonClick = System.currentTimeMillis();
-
             long oneDayInMillis = 1000*86400;
-
             alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + oneDayInMillis, pendingIntent);
+
         });
 
     }
@@ -408,7 +432,7 @@ public class MainActivity extends AppCompatActivity {
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
     }
-    public void button6_onClick(View v){
+    /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
         gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
@@ -432,7 +456,7 @@ public class MainActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
         homeScreen.setVisibility(View.VISIBLE);
         questions.setVisibility(View.GONE);
-    }
+    }*/
     public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
     {
         double totalHouseHoldFPrint = 0; //in lbs
@@ -488,9 +512,8 @@ public class MainActivity extends AppCompatActivity {
         CharSequence name = "DailyInputReminderChannel";
         String description = "Channel for Daily Input Reminder";
         int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel("notifyInput", name, importance);
+        NotificationChannel channel = new NotificationChannel("notifyInputFootprint", name, importance);
         channel.setDescription(description);
-
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
     }

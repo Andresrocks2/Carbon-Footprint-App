@@ -11,10 +11,10 @@ public class ReminderBroadcast extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "notifyInputFootprint")
-                .setSmallIcon(R.drawable.ic_account_black_24dp)
-                .setContentTitle("Input daily data")
-                .setContentText("This is a reminder to input your daily carbon footprint data!")
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+            .setSmallIcon(R.drawable.logo_round)
+            .setContentTitle("Input daily data")
+            .setContentText("This is a reminder to input your daily carbon footprint data!")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
