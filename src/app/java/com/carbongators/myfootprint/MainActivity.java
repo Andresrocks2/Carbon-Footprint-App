@@ -5,8 +5,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.graphics.Color;
-import android.os.Build;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,6 +29,8 @@ import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import net.openid.appauth.AppAuthConfiguration;
 import net.openid.appauth.AuthState;
@@ -51,6 +51,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -85,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Default value is -1
     public int footPrint = -1;
-
+    ArrayList<NewsArticleModel> newsArticleModels = new ArrayList<>();
+    int[] newsImages = {R.drawable.bill, R.drawable.marine};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -168,7 +170,12 @@ public class MainActivity extends AppCompatActivity {
             alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + oneDayInMillis, pendingIntent);
 
         });
-
+        //News Article Setup
+        RecyclerView recyclerView = findViewById(R.id.newsRecycler);
+        setUpNewsModels();
+        News_RecyclerViewAdapter adapter = new News_RecyclerViewAdapter(this, newsArticleModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @MainThread
@@ -516,5 +523,16 @@ public class MainActivity extends AppCompatActivity {
         channel.setDescription(description);
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
+    }
+
+    //News Article Setup
+    private void setUpNewsModels() {
+        String[] newsSources = getResources().getStringArray(R.array.news_source);
+        String[] articleTitles = getResources().getStringArray(R.array.article_titles);
+
+        for(int i = 0; i < newsSources.length; i++)
+        {
+            newsArticleModels.add(new NewsArticleModel(articleTitles[i], newsSources[i], newsImages[i]));
+        }
     }
 }
