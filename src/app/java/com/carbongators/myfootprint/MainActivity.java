@@ -7,8 +7,10 @@ import android.app.PendingIntent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
@@ -63,7 +65,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -80,6 +85,9 @@ public class MainActivity extends AppCompatActivity {
     public final AtomicReference<JSONObject> mUserInfoJson = new AtomicReference<>();
     private ExecutorService mExecutor;
     private Configuration mConfiguration;
+    public double gasMileageGlobal = 0.0;
+    public double kwhPriceGlobal = 0.0;
+    public boolean[] externalFuelsBool = {false, false, false, false};
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -449,9 +457,164 @@ public class MainActivity extends AppCompatActivity {
         questions.setVisibility(View.VISIBLE);
     }
 
-    public void firebaseSample_reference(View v) {
+    public void testButtonReference_onClick(View v) {
+        firebase_updateUserReferenceStats(false, true, true, 0.112, 24);
+    }
+
+    public void drivingSample_onClick(View v) {
+        firebase_fetchGasMileage();
+        // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
+        // notice how it doesnt work the first time. this is because we are calling them right next to eachother.
+        // it will work the first time if you separated these.
+
+        firebase_weeklyDrivingUpdate(42.3, gasMileageGlobal);
+         // still need update carbon footprint function
+    }
+
+    public void elecBillSample_onClick(View v) {
+        firebase_fetchKwhPrice();
+        // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
+        // notice how it doesnt work the first time. this is because we are calling them right next to eachother.
+        // it will work the first time if you separated these.
+
+        firebase_monthlyElectricityUpdate(12.32, kwhPriceGlobal);
+        // still need update carbon footprint function
+    }
+
+    public void externalFuelsSample_onClick(View v) {
+        // TODO create 2 firebase fns, one to test if sending a call is needed, other to update stats
+
 
     }
+
+    public void firebase_fetchExternalFuelBools() {
+        // TODO: Implement
+    }
+
+
+    public void firebase_monthlyElectricityUpdate(double priceOfElectricityBill, double kwhPrice) {
+        Map<String, Object> toInsert = new HashMap<>();
+
+        if(kwhPrice == 0)
+            toInsert.put("elecComp", 0.0);
+        else
+            toInsert.put("elecComp", houseHoldFootprint(0, 0, (priceOfElectricityBill / kwhPrice), 0, 0));
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+
+    }
+
+
+    public void firebase_fetchGasMileage() {
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("referenceStats")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                            gasMileageGlobal = (double) document.getData().getOrDefault("gasMileage", 0.0);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+    }
+
+
+
+    public void firebase_fetchKwhPrice() {
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("referenceStats")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                            kwhPriceGlobal = (double) document.getData().getOrDefault("kwhPrice", 0.0);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+    }
+
+    public void firebase_weeklyDrivingUpdate(double milesDrivenThisWeek, double gasMileage) {
+
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put("drivingComp", transportFootprint(0, milesDrivenThisWeek, gasMileage));
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+
+    }
+
+    public void firebase_updateUserReferenceStats(boolean fuelOil, boolean propane, boolean naturalGas, double kwhPrice, double gasMileage) {
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put("fuelOil", fuelOil);
+        toInsert.put("propane", propane);
+        toInsert.put("naturalGas", naturalGas);
+        toInsert.put("kwhPrice", kwhPrice);
+        toInsert.put("gasMileage", gasMileage);
+
+
+
+        // Set the user's reference stats found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/referenceStats
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("referenceStats")
+            .set(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully written!");
+            }
+        })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+
 
     public void firebaseSample_weekly(View v){
         Map<String, Object> user = new HashMap<>();
@@ -459,8 +622,6 @@ public class MainActivity extends AppCompatActivity {
         user.put("last", "Lovelace");
         user.put("born", 1815);
 
-        // Add a new document with a generated ID
-        // db.collection()
 
         db.collection(getUserToken())
             .add(user)
@@ -506,18 +667,20 @@ public class MainActivity extends AppCompatActivity {
     }*/
     public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
     {
-        double totalHouseHoldFPrint = 0; //in lbs
+        double totalHouseHoldFPrint = 0; //in tons
         totalHouseHoldFPrint += nGasUse*119.58;
         totalHouseHoldFPrint += elecUse*14.4215172;
         totalHouseHoldFPrint += oilUse*22.61;
         totalHouseHoldFPrint += propUse*12.43;
-        return totalHouseHoldFPrint;
+        return totalHouseHoldFPrint / 2000;
     }
     public static double transportFootprint(int zip, double milesPerWeek, double milesPerGallon) //handles the list outside
     {
-        double totalOutput = 0;
-        totalOutput += 4*milesPerWeek*milesPerGallon;
-        return totalOutput;
+        if(milesPerGallon == 0) {
+            return 0;
+        }
+
+        return (4*milesPerWeek) / milesPerGallon;
     }
     public static double wasteFootprint(int zip, boolean[] recycleList)
     {
