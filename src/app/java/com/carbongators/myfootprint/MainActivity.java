@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -457,6 +458,12 @@ public class MainActivity extends AppCompatActivity{
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
+    }
+    public void socialBackClick(View v) {
+        ScrollView homeScreen = (ScrollView) binding.getRoot().findViewById(R.id.socialPage);
+        ScrollView friendPage = (ScrollView) binding.getRoot().findViewById(R.id.friendPage);
+        homeScreen.setVisibility(View.VISIBLE);
+        friendPage.setVisibility(View.GONE);
     }
     /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);

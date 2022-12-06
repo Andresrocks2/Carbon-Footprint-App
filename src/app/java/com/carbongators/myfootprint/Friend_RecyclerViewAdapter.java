@@ -13,11 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class Friend_RecyclerViewAdapter extends RecyclerView.Adapter<Friend_RecyclerViewAdapter.MyViewHolder>{
+    private final FriendRecyclerInterface friendRecyclerInterface;
+
     Context context;
     ArrayList<FriendModel> friendModels;
-    public Friend_RecyclerViewAdapter(Context context, ArrayList<FriendModel> friendModels) {
+    public Friend_RecyclerViewAdapter(Context context, ArrayList<FriendModel> friendModels, FriendRecyclerInterface friendRecyclerInterface) {
         this.context = context;
         this.friendModels = friendModels;
+        this.friendRecyclerInterface = friendRecyclerInterface;
     }
 
     @NonNull
@@ -26,7 +29,7 @@ public class Friend_RecyclerViewAdapter extends RecyclerView.Adapter<Friend_Recy
         LayoutInflater inflater = LayoutInflater.from(context);
         View view = inflater.inflate(R.layout.friendrow, parent, false);
 
-        return new Friend_RecyclerViewAdapter.MyViewHolder(view);
+        return new Friend_RecyclerViewAdapter.MyViewHolder(view, friendRecyclerInterface);
     }
 
     @Override
@@ -46,13 +49,25 @@ public class Friend_RecyclerViewAdapter extends RecyclerView.Adapter<Friend_Recy
 
         ImageView imageView;
         TextView name, email, friendCode;
-        public MyViewHolder(@NonNull View itemView) {
+        public MyViewHolder(@NonNull View itemView, FriendRecyclerInterface friendRecyclerInterface) {
             super (itemView);
 
             imageView = itemView.findViewById(R.id.friendPic);
             name = itemView.findViewById(R.id.friendName);
             email = itemView.findViewById(R.id.friendEmail);
             friendCode = itemView.findViewById(R.id.friendCode);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(friendRecyclerInterface != null) {
+                        int pos = getAdapterPosition();
+                        if(pos != RecyclerView.NO_POSITION){
+                            friendRecyclerInterface.onFriendClick(pos);
+                        }
+                    }
+                }
+            });
         }
     }
 }
