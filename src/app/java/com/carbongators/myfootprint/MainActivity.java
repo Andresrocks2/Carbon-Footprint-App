@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity{
     // Default value is -1
     public int footPrint = -1;
 
-
+    
     LineChart lineChart;
 
     ArcGauge arcGauge;
