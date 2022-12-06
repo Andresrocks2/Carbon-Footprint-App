@@ -1,5 +1,9 @@
 package com.carbongators.myfootprint;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -18,11 +22,15 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import net.openid.appauth.AppAuthConfiguration;
 import net.openid.appauth.AuthState;
@@ -43,6 +51,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -77,7 +86,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Default value is -1
     public int footPrint = -1;
-
+    ArrayList<NewsArticleModel> newsArticleModels = new ArrayList<>();
+    int[] newsImages = {R.drawable.bill, R.drawable.marine};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,10 +127,55 @@ public class MainActivity extends AppCompatActivity {
 
         // Change the text at the top of screen to say "Hi, " + user first name
         //DOES NOT WORK YET
+        //String greeting = "Hi, " + getUserFirstName();
+        //(TextView) findViewById(R.id.textView3)).setText(greeting);
+        //Notification to be sent when button6 is clicked
         String greeting = "Hi, " + "Andres";
         ((TextView) findViewById(R.id.textView3)).setText(greeting);
+        Button button6 = (Button) findViewById(R.id.button6);
+        createNotificationChannel();
+        button6.setOnClickListener(v -> {
+            ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
+            ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+            gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
+            electricity = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal8)).getText().toString());
+            oil = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal9)).getText().toString());
+            propane = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal10)).getText().toString());
+            milesDriven = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal11)).getText().toString());
+            mileage = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal12)).getText().toString());
+            maintenance = ((CheckBox) findViewById(R.id.checkBox4)).isChecked();
 
+            recyclable[0] = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
+            recyclable[1] = ((CheckBox) findViewById(R.id.checkBox3)).isChecked();
+            recyclable[2] = ((CheckBox) findViewById(R.id.checkBox5)).isChecked();
+            recyclable[3] = ((CheckBox) findViewById(R.id.checkBox6)).isChecked();
+            recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
 
+            footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
+
+            String footPrintString = ""+footPrint;
+            ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
+            ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+            homeScreen.setVisibility(View.VISIBLE);
+            questions.setVisibility(View.GONE);
+
+            Toast.makeText(this, "Data Entered!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,ReminderBroadcast.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            long timeAtButtonClick = System.currentTimeMillis();
+            long oneDayInMillis = 1000*86400;
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + oneDayInMillis, pendingIntent);
+
+        });
+        //News Article Setup
+        RecyclerView recyclerView = findViewById(R.id.newsRecycler);
+        setUpNewsModels();
+        News_RecyclerViewAdapter adapter = new News_RecyclerViewAdapter(this, newsArticleModels);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @MainThread
@@ -249,6 +304,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        try {
+            TextView greetingText = (TextView) findViewById(R.id.textView3);
+
+            String temp = "Hi, " + getUserFirstName();
+
+            greetingText.setText(temp);
+        } catch (Exception E) {
+
+        }
         fetchUserInfo();
 
 
@@ -375,7 +439,7 @@ public class MainActivity extends AppCompatActivity {
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
     }
-    public void button6_onClick(View v){
+    /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
         gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
@@ -397,10 +461,9 @@ public class MainActivity extends AppCompatActivity {
         String footPrintString = ""+footPrint;
         ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
         ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
-
         homeScreen.setVisibility(View.VISIBLE);
         questions.setVisibility(View.GONE);
-    }
+    }*/
     public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
     {
         double totalHouseHoldFPrint = 0; //in lbs
@@ -451,4 +514,25 @@ public class MainActivity extends AppCompatActivity {
         return totalOutput;
     }
 
+    //Notification Channel Method
+    private void createNotificationChannel() {
+        CharSequence name = "DailyInputReminderChannel";
+        String description = "Channel for Daily Input Reminder";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel("notifyInputFootprint", name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+
+    //News Article Setup
+    private void setUpNewsModels() {
+        String[] newsSources = getResources().getStringArray(R.array.news_source);
+        String[] articleTitles = getResources().getStringArray(R.array.article_titles);
+
+        for(int i = 0; i < newsSources.length; i++)
+        {
+            newsArticleModels.add(new NewsArticleModel(articleTitles[i], newsSources[i], newsImages[i]));
+        }
+    }
 }

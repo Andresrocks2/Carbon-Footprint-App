@@ -34,4 +34,13 @@
     <string name="title_home">Home</string>
     <string name="title_social">Social</string>
     <string name="title_account">Account</string>
+
+    <string-array name="news_source">
+        <item>CNBC</item>
+        <item>SciTechDaily</item>
+    </string-array>
+    <string-array name="article_titles">
+        <item>New plastics bill emphasizes climate change, justice</item>
+        <item>Does Marine Conservation Mitigate Climate Change?</item>
+    </string-array>
 </resources>
