@@ -7,8 +7,11 @@ import android.app.PendingIntent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -52,11 +55,15 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -73,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     public final AtomicReference<JSONObject> mUserInfoJson = new AtomicReference<>();
     private ExecutorService mExecutor;
     private Configuration mConfiguration;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // Global variables to calculate carbon footprint
     public double gas = 0;
@@ -199,21 +208,21 @@ public class MainActivity extends AppCompatActivity {
 
 
     @MainThread
-    public int getUserToken() {
+    public String getUserToken() {
 
         JSONObject userInfo = mUserInfoJson.get();
 
         if (userInfo != null) {
             if (userInfo.has("sub")) {
                 try {
-                    return Integer.parseInt(userInfo.getString("sub"));
+                    return userInfo.getString("sub");
                 } catch (JSONException e) {
-                    return -1;
+                    return null;
                 }
             }
         }
 
-        return -1;
+        return null;
 
     }
 
@@ -439,6 +448,32 @@ public class MainActivity extends AppCompatActivity {
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
     }
+
+    public void testbutton_onclick(View v){
+        Map<String, Object> user = new HashMap<>();
+        user.put("first", "Ada");
+        user.put("last", "Lovelace");
+        user.put("born", 1815);
+
+        // Add a new document with a generated ID
+        // db.collection()
+
+        db.collection(getUserToken())
+            .add(user)
+            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error adding document", e);
+                }
+            });
+    }
+
     /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
