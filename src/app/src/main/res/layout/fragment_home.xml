@@ -30,8 +30,8 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            tools:layout_editor_absoluteX="32dp"
-            tools:layout_editor_absoluteY="-262dp">>
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp">>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -61,6 +61,7 @@
                     android:id="@+id/textView5"
                     android:layout_width="413dp"
                     android:layout_height="67dp"
+                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:text="No Score Yet!"
                     android:textColor="#F44336"
@@ -78,11 +79,14 @@
 
                 <Button
                     android:id="@+id/button5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="240dp"
+                    android:layout_height="100dp"
+                    android:layout_marginBottom="50dp"
                     android:backgroundTint="@color/colorPrimary"
+                    android:fontFamily="sans-serif-light"
                     android:onClick="button5_onClick"
-                    android:text="Calculate Footprint!" />
+                    android:text="Calculate Footprint!"
+                    android:textSize="25sp" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -90,56 +94,37 @@
                     android:layout_height="118dp"
                     android:background="@color/colorPrimaryDark"
                     android:fontFamily="sans-serif-light"
-                    android:gravity="bottom|center"
-                    android:text="Your Feed:"
+                    android:gravity="center"
+                    android:text="Your Feed"
                     android:textColor="#000000"
-                    android:textSize="30sp" />
+                    android:textSize="35sp" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/textView23"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:text="Daily Tips:"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="25sp" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailytips"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+
                 <TextView
-                    android:id="@+id/textView16"
+                    android:id="@+id/textView25"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:text="Your Personalized Tips:"
                     android:textColor="#000000"
                     android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Daily Tips:"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/dailytips"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:id="@+id/textView16"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:text="Your Personalized Tips:"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/personaltips"
@@ -147,13 +132,14 @@
                     android:layout_height="match_parent" />
 
                 <TextView
-                    android:id="@+id/textView17"
+                    android:id="@+id/textView26"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:text="Climate Change in the News:"
                     android:textColor="#000000"
-                    android:textSize="18sp" />
+                    android:textSize="25sp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/newsRecycler"
@@ -283,6 +269,7 @@
                 android:id="@+id/editTextNumberDecimal10"
                 android:layout_width="105dp"
                 android:layout_height="40dp"
+                android:layout_marginBottom="50dp"
                 android:background="@drawable/custom_input"
                 android:ems="10"
                 android:hint="Enter here"
@@ -397,6 +384,7 @@
                 android:id="@+id/checkBox4"
                 android:layout_width="match_parent"
                 android:layout_height="130dp"
+                android:layout_marginBottom="50dp"
                 android:text="Do you perform maintenance on your vehicle?"
                 android:textSize="20sp" />
 
@@ -494,6 +482,7 @@
                 android:id="@+id/checkBox2"
                 android:layout_width="300dp"
                 android:layout_height="70dp"
+                android:layout_marginBottom="50dp"
                 android:text="Do you recycle aluminum and steel? "
                 android:textSize="20sp" />
 

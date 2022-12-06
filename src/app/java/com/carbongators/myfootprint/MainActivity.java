@@ -63,12 +63,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
-<<<<<<< HEAD
+
 import java.lang.Math;
-=======
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
->>>>>>> BIll
+
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
 
@@ -100,21 +100,21 @@ public class MainActivity extends AppCompatActivity{
 
     // Default value is -1
     public int footPrint = -1;
-<<<<<<< HEAD
+
 
     LineChart lineChart;
 
     ArcGauge arcGauge;
     com.ekn.gruzer.gaugelibrary.Range range1, range2, range3;
 
-=======
+
     /*
     ArrayList<NewsArticleModel> newsArticleModels = new ArrayList<>();
     ArrayList<TipModel> generalTips = new ArrayList<>();
     ArrayList<TipModel> personalTips = new ArrayList<>();
     int[] newsImages = {R.drawable.bill, R.drawable.marine};
     */
->>>>>>> BIll
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,8 +160,9 @@ public class MainActivity extends AppCompatActivity{
         Button button6 = (Button) findViewById(R.id.button6);
         createNotificationChannel();
         button6.setOnClickListener(v -> {
+
             ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
-            ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+            ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.recyclingScreen);
             gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
             electricity = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal8)).getText().toString());
             oil = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal9)).getText().toString());
@@ -170,8 +171,6 @@ public class MainActivity extends AppCompatActivity{
             mileage = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal12)).getText().toString());
             maintenance = ((CheckBox) findViewById(R.id.checkBox4)).isChecked();
 
-<<<<<<< HEAD
-=======
             recyclable[0] = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
             recyclable[1] = ((CheckBox) findViewById(R.id.checkBox3)).isChecked();
             recyclable[2] = ((CheckBox) findViewById(R.id.checkBox5)).isChecked();
@@ -179,10 +178,28 @@ public class MainActivity extends AppCompatActivity{
             recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
 
             footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
+            int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 10000));
 
-            String footPrintString = ""+footPrint;
-            ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
-            ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+
+            arcGauge.setValue(score);
+
+            Description desc = new Description();
+            desc.setText("");
+            lineChart = (LineChart) findViewById(R.id.lineChart);
+            LineDataSet lineDataSet = new LineDataSet(lineChartData(),"Your score over the last 7 days");
+            ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+            dataSets.add(lineDataSet);
+            LineData data = new LineData(dataSets);
+            lineDataSet.setCircleColor(Color.GREEN);
+            lineDataSet.setColor(Color.GREEN);
+            lineDataSet.setCircleRadius(4);
+            lineChart.setBackgroundColor(Color.TRANSPARENT);
+            lineChart.setDescription(desc);
+            lineChart.setData(data);
+            lineChart.invalidate();
+            ((LineChart)findViewById(R.id.lineChart)).setVisibility(View.VISIBLE);
+
+            ((TextView) findViewById(R.id.textView5)).setVisibility(View.GONE);
             homeScreen.setVisibility(View.VISIBLE);
             questions.setVisibility(View.GONE);
 
@@ -216,7 +233,7 @@ public class MainActivity extends AppCompatActivity{
         personalTipRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         */
->>>>>>> BIll
+
     }
 
     @MainThread
@@ -504,7 +521,9 @@ public class MainActivity extends AppCompatActivity{
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
     }
-    /*public void button6_onClick(View v){
+
+    /*
+    public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.recyclingScreen);
         gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
@@ -524,7 +543,7 @@ public class MainActivity extends AppCompatActivity{
         footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
         int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 10000));
 
-<<<<<<< HEAD
+
         arcGauge.setValue(score);
 
         Description desc = new Description();
@@ -547,6 +566,7 @@ public class MainActivity extends AppCompatActivity{
         homeScreen.setVisibility(View.VISIBLE);
         questions.setVisibility(View.GONE);
     }
+     */
     public void back1_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
         ConstraintLayout homeEnergyquestions = (ConstraintLayout)findViewById(R.id.homeEnergyScreen);
@@ -577,14 +597,7 @@ public class MainActivity extends AppCompatActivity{
         transportationScreen.setVisibility(View.VISIBLE);
         recyclingScreen.setVisibility(View.GONE);
     }
-=======
-        String footPrintString = ""+footPrint;
-        ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
-        ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
-        homeScreen.setVisibility(View.VISIBLE);
-        questions.setVisibility(View.GONE);
-    }*/
->>>>>>> BIll
+
     public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
     {
         double totalHouseHoldFPrint = 0; //in lbs
@@ -635,7 +648,7 @@ public class MainActivity extends AppCompatActivity{
         return totalOutput;
     }
 
-<<<<<<< HEAD
+
     private ArrayList<Entry> lineChartData() {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
         for(int i = 1; i <= 7; i++)
@@ -644,7 +657,7 @@ public class MainActivity extends AppCompatActivity{
         }
         return dataVals;
     }
-=======
+
     //Notification Channel Method
     private void createNotificationChannel() {
         CharSequence name = "DailyInputReminderChannel";
@@ -710,5 +723,5 @@ public class MainActivity extends AppCompatActivity{
         Uri uri = Uri.parse(s);
         startActivity(new Intent(Intent.ACTION_VIEW,uri));
     }*/
->>>>>>> BIll
+
 }
