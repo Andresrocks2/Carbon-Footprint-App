@@ -56,8 +56,13 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -86,6 +91,14 @@ public class MainActivity extends AppCompatActivity {
     public double kwhPriceGlobal = 0.0;
     public double carbonFootprintGlobal = 0.0;
     public boolean[] externalFuelsBoolGlobal = {false, false, false};
+    public boolean hasDoneInitialFetch = false;
+
+    public List<String> friendsListNames;
+    public List<String> friendsListImages;
+    public List<Boolean> friendsListIsFriendNotInvite;
+    public List<Double> friendsListDrivingBreakdown;
+    public List<Double> friendsListElecBreakdown;
+    public List<Double> friendsListOtherBreakdown;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -378,9 +391,19 @@ public class MainActivity extends AppCompatActivity {
 
             greetingText.setText(temp);
 
-            firebase_fetchAll();
-
         } catch (Exception E) {
+
+        } finally {
+            if(!hasDoneInitialFetch) {
+                hasDoneInitialFetch = true;
+
+                try {
+                    firebase_fetchAll();
+                }catch (Exception e) {
+
+                }
+
+            }
 
         }
         fetchUserInfo();
@@ -508,10 +531,14 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
+
+        firebase_fetchCarbonFootprintFromBreakdown();
     }
 
     public void testButtonReference_onClick(View v) {
-        firebase_updateUserReferenceStats(false, true, true, 0.112, 24, new boolean[]{false, false, true, false, false});
+        //firebase_updateUserReferenceStats(false, true, true, 0.112, 24, new boolean[]{false, false, true, false, false});
+        firebase_pushFootprintData();
+
     }
 
     public void drivingSample_onClick(View v) {
@@ -557,11 +584,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void firebase_fetchAll() {
-        firebase_fetchCarbonFootprintFromBreakdown();
         firebase_fetchExternalFuelBools();
         firebase_fetchKwhPrice();
         firebase_fetchGasMileage();
         firebase_updateGoogleAccountInfo();
+        firebase_updateEmailReg();
+        firebase_fetchCarbonFootprintFromBreakdown();
+
     }
 
     public void firebase_fetchCarbonFootprintFromBreakdown() {
@@ -585,6 +614,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             });
+    }
+
+
+    public void firebase_sendFriendRequest(String email) {
+
     }
 
     public void firebase_monthlyExternalFuelUpdate(double naturalGasBill, double fuelOilBill, double propaneBill) {
@@ -660,6 +694,58 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+    }
+
+    public void firebase_pushFootprintData() {
+        Map<String, Object> toInsert = new HashMap<>();
+
+        if(carbonFootprintGlobal == 0)
+            return;
+
+        String currDate = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(new Date());
+
+        toInsert.put(currDate, carbonFootprintGlobal);
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(getUserToken()).document("statistics")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+    public void firebase_fetchFriendsData() {
+
+    }
+
+    public void firebase_updateEmailReg() {
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put(getUserEmail(), getUserToken());
+
+        db.collection("global").document("emails")
+            .set(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
     }
 
     public void firebase_updateGoogleAccountInfo() {
