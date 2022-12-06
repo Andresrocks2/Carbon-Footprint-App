@@ -93,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean[] externalFuelsBoolGlobal = {false, false, false};
     public boolean hasDoneInitialFetch = false;
 
+    public List<String> friendsListTokens;
     public List<String> friendsListNames;
     public List<String> friendsListImages;
     public List<Boolean> friendsListIsFriendNotInvite;
@@ -532,12 +533,12 @@ public class MainActivity extends AppCompatActivity {
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
 
-        firebase_fetchCarbonFootprintFromBreakdown();
+        //firebase_updateEmailReg();
     }
 
     public void testButtonReference_onClick(View v) {
-        //firebase_updateUserReferenceStats(false, true, true, 0.112, 24, new boolean[]{false, false, true, false, false});
-        firebase_pushFootprintData();
+        firebase_updateUserReferenceStats(false, true, true, 0.112, 24, new boolean[]{false, false, true, false, false});
+        //firebase_sendFriendRequest("jackschedel@gmail.com");
 
     }
 
@@ -617,9 +618,51 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /*
+    public String tempFriendsToken = "";
+
     public void firebase_sendFriendRequest(String email) {
 
+        db.collection("global").document("emails")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            tempFriendsToken = (String) document.getData().getOrDefault(email, "null");
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put(getUserEmail(), false);
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(tempFriendsToken).document("friends")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
     }
+
+     */
 
     public void firebase_monthlyExternalFuelUpdate(double naturalGasBill, double fuelOilBill, double propaneBill) {
 
