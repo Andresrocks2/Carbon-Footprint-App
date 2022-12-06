@@ -34,59 +34,49 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/textView3"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="76dp"
+                    android:background="@color/colorAccent"
+                    android:fontFamily="sans-serif-light"
                     android:gravity="center"
                     android:text="Hi, Andres"
-                    android:textColor="#000000"
+                    android:textColor="@android:color/black"
                     android:textSize="40sp" />
 
                 <TextView
                     android:id="@+id/textView4"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="66dp"
                     android:gravity="center"
                     android:text="Your Carbon Footprint Score Today is: " />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="425dp">
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="413dp"
+                    android:layout_height="200dp"
+                    android:gravity="center"
+                    android:text="No Score Yet!"
+                    android:textColor="#F44336"
+                    android:textSize="30sp" />
 
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="413dp"
-                        android:layout_height="200dp"
-                        android:gravity="center"
-                        android:text="No Score Yet!"
-                        android:textColor="#F44336"
-                        android:textSize="30sp"
-                        tools:layout_editor_absoluteX="0dp"
-                        tools:layout_editor_absoluteY="1dp" />
-
-                    <Button
-                        android:id="@+id/button5"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:onClick="button5_onClick"
-                        android:text="Calculate Footprint!"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.498"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="0.533" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                <Button
+                    android:id="@+id/button5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:onClick="button5_onClick"
+                    android:text="Calculate Footprint!" />
 
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
+                    android:layout_height="176dp"
+                    android:gravity="bottom|center"
                     android:text="Your Feed:"
                     android:textColor="#000000"
                     android:textSize="25sp" />
@@ -118,15 +108,17 @@
                 android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="79dp"
+                android:background="@color/colorAccent"
+                android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:text="Calculating Footprint"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@android:color/black"
                 android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/textView20"
                 android:layout_width="match_parent"
-                android:layout_height="133dp"
+                android:layout_height="75dp"
                 android:gravity="bottom|center"
                 android:text="Home Energy"
                 android:textColor="@android:color/holo_blue_dark"
@@ -135,7 +127,7 @@
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="match_parent"
-                android:layout_height="73dp"
+                android:layout_height="87dp"
                 android:gravity="center"
                 android:text="Enter your average monthly kwH for each source of energy your household uses."
                 android:textSize="20sp" />
@@ -145,7 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="Electricity" />
+                android:text="Electricity"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/editTextNumberDecimal7"
@@ -163,7 +156,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="Natural Gas" />
+                android:text="Natural Gas"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/editTextNumberDecimal8"
@@ -181,7 +175,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="Fuel Oil" />
+                android:text="Fuel Oil"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/editTextNumberDecimal9"
@@ -199,7 +194,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:gravity="center"
-                android:text="Propane" />
+                android:text="Propane"
+                android:textSize="20sp" />
 
             <EditText
                 android:id="@+id/editTextNumberDecimal10"
@@ -219,19 +215,25 @@
 
                 <Button
                     android:id="@+id/back1"
-                    android:layout_width="205dp"
-                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimaryDark"
+                    android:fontFamily="sans-serif-light"
                     android:onClick="back1_onClick"
-                    android:text="Back" />
+                    android:text="Back"
+                    android:textSize="25sp" />
 
                 <Button
                     android:id="@+id/next1"
-                    android:layout_width="206dp"
-                    android:layout_height="49dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimary"
+                    android:fontFamily="sans-serif-light"
                     android:onClick="next1_onClick"
-                    android:text="Next" />
+                    android:text="Next"
+                    android:textSize="25sp" />
 
             </LinearLayout>
 
@@ -255,15 +257,17 @@
                 android:id="@+id/textView16"
                 android:layout_width="match_parent"
                 android:layout_height="79dp"
+                android:background="@color/colorAccent"
+                android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:text="Calculating Footprint"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@android:color/black"
                 android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/textView15"
                 android:layout_width="match_parent"
-                android:layout_height="133dp"
+                android:layout_height="75dp"
                 android:gravity="bottom|center"
                 android:text="Transportation"
                 android:textColor="@android:color/holo_blue_dark"
@@ -310,7 +314,7 @@
             <CheckBox
                 android:id="@+id/checkBox4"
                 android:layout_width="match_parent"
-                android:layout_height="65dp"
+                android:layout_height="130dp"
                 android:text="Do you perform maintenance on your vehicle?"
                 android:textSize="20sp" />
 
@@ -322,20 +326,24 @@
                 <Button
                     android:id="@+id/back2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimaryDark"
+                    android:fontFamily="sans-serif-light"
                     android:onClick="back2_onClick"
-                    android:text="Back" />
+                    android:text="Back"
+                    android:textSize="25sp" />
 
                 <Button
                     android:id="@+id/next2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimary"
+                    android:fontFamily="sans-serif-light"
                     android:onClick="next2_onClick"
-                    android:text="Next" />
+                    android:text="Next"
+                    android:textSize="25sp" />
             </LinearLayout>
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -356,15 +364,17 @@
                 android:id="@+id/textView17"
                 android:layout_width="match_parent"
                 android:layout_height="79dp"
+                android:background="@color/colorAccent"
+                android:fontFamily="sans-serif-light"
                 android:gravity="center"
                 android:text="Calculating Footprint"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@android:color/black"
                 android:textSize="35sp" />
 
             <TextView
                 android:id="@+id/textView19"
                 android:layout_width="match_parent"
-                android:layout_height="133dp"
+                android:layout_height="75dp"
                 android:gravity="bottom|center"
                 android:text="Recycling"
                 android:textColor="@android:color/holo_blue_dark"
@@ -372,33 +382,38 @@
 
             <CheckBox
                 android:id="@+id/checkBox7"
-                android:layout_width="257dp"
-                android:layout_height="wrap_content"
-                android:text="Do you recycle magazines?  " />
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:text="Do you recycle magazines?  "
+                android:textSize="20sp" />
 
             <CheckBox
                 android:id="@+id/checkBox5"
-                android:layout_width="258dp"
-                android:layout_height="wrap_content"
-                android:text="Do you recycle glass? " />
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:text="Do you recycle glass? "
+                android:textSize="20sp" />
 
             <CheckBox
                 android:id="@+id/checkBox3"
-                android:layout_width="257dp"
-                android:layout_height="wrap_content"
-                android:text="Do you recycle plastic? " />
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:text="Do you recycle plastic? "
+                android:textSize="20sp" />
 
             <CheckBox
                 android:id="@+id/checkBox6"
-                android:layout_width="258dp"
-                android:layout_height="wrap_content"
-                android:text="Do you recycle newspapers? " />
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:text="Do you recycle newspapers? "
+                android:textSize="20sp" />
 
             <CheckBox
                 android:id="@+id/checkBox2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Do you recycle aluminum and steel? " />
+                android:layout_width="300dp"
+                android:layout_height="70dp"
+                android:text="Do you recycle aluminum and steel? "
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -407,21 +422,25 @@
 
                 <Button
                     android:id="@+id/back3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="164dp"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimaryDark"
+                    android:fontFamily="sans-serif-light"
                     android:onClick="back3_onClick"
-                    android:text="Back" />
+                    android:text="Back"
+                    android:textSize="25sp" />
 
                 <Button
                     android:id="@+id/button6"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="100dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimary"
+                    android:fontFamily="sans-serif-light"
                     android:onClick="button6_onClick"
-                    android:text="Calculate!" />
+                    android:text="Calculate!"
+                    android:textSize="25sp" />
             </LinearLayout>
 
         </LinearLayout>
