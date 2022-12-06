@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="0dp">>
+            tools:layout_editor_absoluteY="-57dp">>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -51,13 +51,6 @@
                     android:textSize="40sp" />
 
                 <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="66dp"
-                    android:gravity="center"
-                    android:text="Your Carbon Footprint Score Today is: " />
-
-                <TextView
                     android:id="@+id/textView5"
                     android:layout_width="413dp"
                     android:layout_height="67dp"
@@ -66,6 +59,13 @@
                     android:text="No Score Yet!"
                     android:textColor="#F44336"
                     android:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="match_parent"
+                    android:layout_height="66dp"
+                    android:gravity="center"
+                    android:text="Your Carbon Footprint Score Today is: " />
 
                 <com.ekn.gruzer.gaugelibrary.ArcGauge
                     android:id="@+id/arcGuage"
@@ -88,6 +88,35 @@
                     android:text="Calculate Footprint!"
                     android:textSize="25sp" />
 
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="testButtonReference_onClick"
+                    android:text="Reference" />
+
+
+                <Button
+                    android:id="@+id/button2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="drivingSample_onClick"
+                    android:text="Driving Weekly Update" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="externalFuelsSample_onClick"
+                    android:text="External Fuels Monthly Update" />
+
+                <Button
+                    android:id="@+id/button4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="elecBillSample_onClick"
+                    android:text="Electricity Bill Monthly Update" />
+
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="match_parent"
@@ -109,13 +138,13 @@
                     android:textColor="#000000"
                     android:textSize="25sp" />
 
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailytips"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp" />
+                    android:layout_marginBottom="50dp">
 
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/textView25"
@@ -125,13 +154,15 @@
                     android:gravity="center"
                     android:text="Your Personalized Tips:"
                     android:textColor="#000000"
-                    android:textSize="25sp" />
+                    android:textSize="25sp"
+                    tools:layout_editor_absoluteY="1094dp" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/personaltips"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginBottom="50dp" />
+                    android:layout_height="match_parent" >
+
+                </androidx.recyclerview.widget.RecyclerView>
 
                 <TextView
                     android:id="@+id/textView26"
@@ -150,17 +181,11 @@
 
                 </androidx.recyclerview.widget.RecyclerView>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="64dp"
-                    android:orientation="vertical">
-
-                </LinearLayout>
-
             </LinearLayout>
         </ScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/homeEnergyScreen"

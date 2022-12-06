@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.graphics.Color;
 import android.os.Bundle;
 
+
 import com.ekn.gruzer.gaugelibrary.ArcGauge;
 import com.ekn.gruzer.gaugelibrary.Range;
 import com.github.mikephil.charting.charts.LineChart;
@@ -15,8 +16,15 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -59,7 +67,14 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
@@ -71,6 +86,8 @@ import java.time.format.DateTimeFormatter;
 
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -87,6 +104,21 @@ public class MainActivity extends AppCompatActivity{
     public final AtomicReference<JSONObject> mUserInfoJson = new AtomicReference<>();
     private ExecutorService mExecutor;
     private Configuration mConfiguration;
+    public double gasMileageGlobal = 0.0;
+    public double kwhPriceGlobal = 0.0;
+    public double carbonFootprintGlobal = 0.0;
+    public boolean[] externalFuelsBoolGlobal = {false, false, false};
+    public boolean hasDoneInitialFetch = false;
+
+    public List<String> friendsListTokens;
+    public List<String> friendsListNames;
+    public List<String> friendsListImages;
+    public List<Boolean> friendsListIsFriendNotInvite;
+    public List<Double> friendsListDrivingBreakdown;
+    public List<Double> friendsListElecBreakdown;
+    public List<Double> friendsListOtherBreakdown;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // Global variables to calculate carbon footprint
     public double gas = 0;
@@ -250,31 +282,82 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         }
-
         return null;
 
     }
 
-
     @MainThread
-    public int getUserToken() {
+    public String getUserToken() {
 
         JSONObject userInfo = mUserInfoJson.get();
 
         if (userInfo != null) {
             if (userInfo.has("sub")) {
                 try {
-                    return Integer.parseInt(userInfo.getString("sub"));
+                    return userInfo.getString("sub");
                 } catch (JSONException e) {
-                    return -1;
+                    return null;
                 }
             }
         }
 
-        return -1;
+        return null;
 
     }
 
+    public String getUserFullName() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("name")) {
+                try {
+                    return userInfo.getString("name");
+                } catch (JSONException e) {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    public String getUserEmail() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("email")) {
+                try {
+                    return userInfo.getString("email");
+                } catch (JSONException e) {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    public String getUserImageURL() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("picture")) {
+                try {
+                    return userInfo.getString("picture");
+                } catch (JSONException e) {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+
+    }
 
     @Override
     protected void onStart() {
@@ -331,6 +414,7 @@ public class MainActivity extends AppCompatActivity{
         } else {
             finish();
         }
+
     }
     @MainThread
     private void exchangeAuthorizationCode(AuthorizationResponse authorizationResponse) {
@@ -392,7 +476,20 @@ public class MainActivity extends AppCompatActivity{
             String temp = "Hi, " + getUserFirstName();
 
             greetingText.setText(temp);
+
         } catch (Exception E) {
+
+        } finally {
+            if(!hasDoneInitialFetch) {
+                hasDoneInitialFetch = true;
+
+                try {
+                    firebase_fetchAll();
+                }catch (Exception e) {
+
+                }
+
+            }
 
         }
         fetchUserInfo();
@@ -520,10 +617,414 @@ public class MainActivity extends AppCompatActivity{
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.homeEnergyScreen);
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
+
+        //firebase_updateEmailReg();
     }
 
+
     /*
-    public void button6_onClick(View v){
+    public void button6_onClick(View v) {
+    }
+    */
+    }
+
+    public void testButtonReference_onClick(View v) {
+        firebase_updateUserReferenceStats(false, true, true, 0.112, 24, new boolean[]{false, false, true, false, false});
+        //firebase_sendFriendRequest("jackschedel@gmail.com");
+
+    }
+
+    public void drivingSample_onClick(View v) {
+        firebase_fetchGasMileage();
+        // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
+
+
+        firebase_weeklyDrivingUpdate(42.3, gasMileageGlobal);
+
+
+         // still need update carbon footprint function
+    }
+
+    public void elecBillSample_onClick(View v) {
+        firebase_fetchKwhPrice();
+        // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
+
+
+        firebase_monthlyElectricityUpdate(12.32, kwhPriceGlobal);
+
+
+        // still need update carbon footprint function
+    }
+
+    public void externalFuelsSample_onClick(View v) {
+        // you will want to call fetchExternalFuelBools somewhere on app init so that way you can use externalFuelsBool for your data entry page.
+        // externalFuelsBool[i]:
+        // 0: naturalGas
+        // 1: fuelOil
+        // 2: propane
+        // true if it should be asked, false if they do not use it.
+
+        firebase_fetchExternalFuelBools();
+        // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
+
+
+        // feel free to put whatever in any unused external fuels.
+        // I already have the externalFuelsBool checking in place in the calculator too :)
+        firebase_monthlyExternalFuelUpdate(3.0, 2.5, 1.2);
+
+
+        // still need update carbon footprint function
+    }
+
+    public void firebase_fetchAll() {
+        firebase_fetchExternalFuelBools();
+        firebase_fetchKwhPrice();
+        firebase_fetchGasMileage();
+        firebase_updateGoogleAccountInfo();
+        firebase_updateEmailReg();
+        firebase_fetchCarbonFootprintFromBreakdown();
+
+    }
+
+    public void firebase_fetchCarbonFootprintFromBreakdown() {
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            carbonFootprintGlobal = (double) document.getData().getOrDefault("recycleComp", false);
+                            carbonFootprintGlobal += (double) document.getData().getOrDefault("drivingComp", false);
+                            carbonFootprintGlobal += (double) document.getData().getOrDefault("elecComp", false);
+                            carbonFootprintGlobal += (double) document.getData().getOrDefault("externalComp", false);
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+    }
+
+
+    /*
+    public String tempFriendsToken = "";
+
+    public void firebase_sendFriendRequest(String email) {
+
+        db.collection("global").document("emails")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            tempFriendsToken = (String) document.getData().getOrDefault(email, "null");
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put(getUserEmail(), false);
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(tempFriendsToken).document("friends")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+     */
+
+    public void firebase_monthlyExternalFuelUpdate(double naturalGasBill, double fuelOilBill, double propaneBill) {
+
+
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put("externalComp", externalFuelsFootprint(0, naturalGasBill, fuelOilBill, propaneBill));
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+    public void firebase_fetchExternalFuelBools() {
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("referenceStats")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                            externalFuelsBoolGlobal[0] = (boolean) document.getData().getOrDefault("naturalGas", false);
+                            externalFuelsBoolGlobal[1] = (boolean) document.getData().getOrDefault("fuelOil", false);
+                            externalFuelsBoolGlobal[2] = (boolean) document.getData().getOrDefault("propane", false);
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+    }
+
+
+    public void firebase_monthlyElectricityUpdate(double priceOfElectricityBill, double kwhPrice) {
+        Map<String, Object> toInsert = new HashMap<>();
+
+        if(kwhPrice == 0)
+            toInsert.put("elecComp", 0.0);
+        else
+            toInsert.put("elecComp", houseHoldFootprint(0, 0, (priceOfElectricityBill / kwhPrice), 0, 0));
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+
+    }
+
+    public void firebase_pushFootprintData() {
+        Map<String, Object> toInsert = new HashMap<>();
+
+        if(carbonFootprintGlobal == 0)
+            return;
+
+        String currDate = new SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(new Date());
+
+        toInsert.put(currDate, carbonFootprintGlobal);
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(getUserToken()).document("statistics")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+    public void firebase_fetchFriendsData() {
+
+    }
+
+    public void firebase_updateEmailReg() {
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put(getUserEmail(), getUserToken());
+
+        db.collection("global").document("emails")
+            .set(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+    public void firebase_updateGoogleAccountInfo() {
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put("email", getUserEmail());
+        toInsert.put("image", getUserImageURL());
+        toInsert.put("name", getUserFullName());
+
+
+        // Set the user's reference stats found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/referenceStats
+        db.collection(getUserToken()).document("account")
+            .set(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+
+    public void firebase_fetchGasMileage() {
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("referenceStats")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                            gasMileageGlobal = (double) document.getData().getOrDefault("gasMileage", 0.0);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+    }
+
+
+
+    public void firebase_fetchKwhPrice() {
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("referenceStats")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+
+                            kwhPriceGlobal = (double) document.getData().getOrDefault("kwhPrice", 0.0);
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
+    }
+
+    public void firebase_weeklyDrivingUpdate(double milesDrivenThisWeek, double gasMileage) {
+
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put("drivingComp", transportFootprint(0, milesDrivenThisWeek, gasMileage));
+
+        // Set the user's drivingComp stat found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/lastBreakdown
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .update(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+
+    }
+
+    public void firebase_updateUserReferenceStats(boolean fuelOil, boolean propane, boolean naturalGas, double kwhPrice, double gasMileage, boolean[] recycleList) {
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put("fuelOil", fuelOil);
+        toInsert.put("propane", propane);
+        toInsert.put("naturalGas", naturalGas);
+        toInsert.put("kwhPrice", kwhPrice);
+        toInsert.put("gasMileage", gasMileage);
+
+
+
+        // Set the user's reference stats found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/referenceStats
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("referenceStats")
+            .set(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "DocumentSnapshot successfully written!");
+            }
+        })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+
+
+        Map<String, Object> toInsert2 = new HashMap<>();
+        toInsert2.put("recycleComp", wasteFootprint(0, recycleList));
+
+
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .update(toInsert2)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+    }
+
+
+    /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.recyclingScreen);
         gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
@@ -600,18 +1101,20 @@ public class MainActivity extends AppCompatActivity{
 
     public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
     {
-        double totalHouseHoldFPrint = 0; //in lbs
+        double totalHouseHoldFPrint = 0; //in tons
         totalHouseHoldFPrint += nGasUse*119.58;
         totalHouseHoldFPrint += elecUse*14.4215172;
         totalHouseHoldFPrint += oilUse*22.61;
         totalHouseHoldFPrint += propUse*12.43;
-        return totalHouseHoldFPrint;
+        return totalHouseHoldFPrint / 2000;
     }
     public static double transportFootprint(int zip, double milesPerWeek, double milesPerGallon) //handles the list outside
     {
-        double totalOutput = 0;
-        totalOutput += 4*milesPerWeek*milesPerGallon;
-        return totalOutput;
+        if(milesPerGallon == 0) {
+            return 0;
+        }
+
+        return (4*milesPerWeek) / milesPerGallon;
     }
     public static double wasteFootprint(int zip, boolean[] recycleList)
     {
@@ -638,6 +1141,26 @@ public class MainActivity extends AppCompatActivity{
         }
         return totalWasteFootprint;
     }
+
+    public double externalFuelsFootprint(int zip, double nGasUse, double oilUse, double propUse) {
+        // TODO: fix to be based on bill price, using average american price.
+        if(!externalFuelsBoolGlobal[0])
+            nGasUse = 0;
+
+        if(!externalFuelsBoolGlobal[1])
+            oilUse = 0;
+
+        if(!externalFuelsBoolGlobal[2])
+            oilUse = 0;
+
+        double totalHouseHoldFPrint = 0; //in tons
+        totalHouseHoldFPrint += nGasUse*119.58;
+        totalHouseHoldFPrint += oilUse*22.61;
+        totalHouseHoldFPrint += propUse*12.43;
+        return totalHouseHoldFPrint / 2000;
+    }
+
+
     public static int calcTotalFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse, double milesPerWeek, double milesPerGallon, boolean maintenance, boolean[] recycleList)
     {
         double totalFootprint = 0;
