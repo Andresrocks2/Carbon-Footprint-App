@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity {
     // Default value is -1
     public int footPrint = -1;
 
+    LineChart lineChart;
+
     ArcGauge arcGauge;
     com.ekn.gruzer.gaugelibrary.Range range1, range2, range3;
 
@@ -198,6 +200,8 @@ public class MainActivity extends AppCompatActivity {
         range3.setTo(1000);
         range3.setColor(Color.GREEN);
         arcGauge.addRange(range3);
+
+        ((LineChart)findViewById(R.id.lineChart)).setVisibility(View.GONE);
 
         if (mExecutor.isShutdown()) {
             mExecutor = Executors.newSingleThreadExecutor();
@@ -429,6 +433,22 @@ public class MainActivity extends AppCompatActivity {
 
         arcGauge.setValue(score);
 
+        Description desc = new Description();
+        desc.setText("");
+        lineChart = (LineChart) findViewById(R.id.lineChart);
+        LineDataSet lineDataSet = new LineDataSet(lineChartData(),"Your score over the last 7 days");
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(lineDataSet);
+        LineData data = new LineData(dataSets);
+        lineDataSet.setCircleColor(Color.GREEN);
+        lineDataSet.setColor(Color.GREEN);
+        lineDataSet.setCircleRadius(4);
+        lineChart.setBackgroundColor(Color.TRANSPARENT);
+        lineChart.setDescription(desc);
+        lineChart.setData(data);
+        lineChart.invalidate();
+        ((LineChart)findViewById(R.id.lineChart)).setVisibility(View.VISIBLE);
+
         ((TextView) findViewById(R.id.textView5)).setVisibility(View.GONE);
         homeScreen.setVisibility(View.VISIBLE);
         questions.setVisibility(View.GONE);
@@ -481,5 +501,14 @@ public class MainActivity extends AppCompatActivity {
         totalFootprint += wasteFootprint(zip, recycleList);
         int totalOutput = (int)totalFootprint;
         return totalOutput;
+    }
+
+    private ArrayList<Entry> lineChartData() {
+        ArrayList<Entry> dataVals = new ArrayList<Entry>();
+        for(int i = 1; i <= 7; i++)
+        {
+            dataVals.add(new Entry(i, i * i));
+        }
+        return dataVals;
     }
 }
