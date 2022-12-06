@@ -64,11 +64,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -87,7 +84,8 @@ public class MainActivity extends AppCompatActivity {
     private Configuration mConfiguration;
     public double gasMileageGlobal = 0.0;
     public double kwhPriceGlobal = 0.0;
-    public boolean[] externalFuelsBool = {false, false, false};
+    public double carbonFootprintGlobal = 0.0;
+    public boolean[] externalFuelsBoolGlobal = {false, false, false};
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -209,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
-
         return null;
 
     }
@@ -266,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
         } else {
             finish();
         }
+
     }
     @MainThread
     private void exchangeAuthorizationCode(AuthorizationResponse authorizationResponse) {
@@ -455,17 +453,18 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
+        firebase_fetchCarbonFootprintFromBreakdown();
+        Log.d(TAG, "Carbon Footprint: " + String.valueOf(carbonFootprintGlobal));
     }
 
     public void testButtonReference_onClick(View v) {
-        firebase_updateUserReferenceStats(false, true, true, 0.112, 24);
+        firebase_updateUserReferenceStats(false, true, true, 0.112, 24, new boolean[]{false, false, true, false, false});
     }
 
     public void drivingSample_onClick(View v) {
         firebase_fetchGasMileage();
         // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
-        // notice how it doesnt work the first time. this is because we are calling them right next to eachother.
-        // it will work the first time if you separated these.
+
 
         firebase_weeklyDrivingUpdate(42.3, gasMileageGlobal);
 
@@ -476,8 +475,7 @@ public class MainActivity extends AppCompatActivity {
     public void elecBillSample_onClick(View v) {
         firebase_fetchKwhPrice();
         // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
-        // notice how it doesnt work the first time. this is because we are calling them right next to eachother.
-        // it will work the first time if you separated these.
+
 
         firebase_monthlyElectricityUpdate(12.32, kwhPriceGlobal);
 
@@ -495,8 +493,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebase_fetchExternalFuelBools();
         // THESE ARE TWO SEPERATE FUNCTIONS FOR A REASON. PLEASE CALL FETCH ASAP ON FORM CREATE TO GIVE IT TIME
-        // notice how it doesnt work the first time. this is because we are calling them right next to eachother.
-        // it will work the first time if you separated these.
+
 
         // feel free to put whatever in any unused external fuels.
         // I already have the externalFuelsBool checking in place in the calculator too :)
@@ -504,6 +501,36 @@ public class MainActivity extends AppCompatActivity {
 
 
         // still need update carbon footprint function
+    }
+
+    public void firebase_fetchAll() {
+        firebase_fetchCarbonFootprintFromBreakdown();
+        firebase_fetchExternalFuelBools();
+        firebase_fetchKwhPrice();
+        firebase_fetchGasMileage();
+    }
+
+    public void firebase_fetchCarbonFootprintFromBreakdown() {
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            carbonFootprintGlobal = (double) document.getData().getOrDefault("recycleComp", false);
+                            carbonFootprintGlobal += (double) document.getData().getOrDefault("drivingComp", false);
+                            carbonFootprintGlobal += (double) document.getData().getOrDefault("elecComp", false);
+                            carbonFootprintGlobal += (double) document.getData().getOrDefault("externalComp", false);
+
+                        } else {
+                            Log.d(TAG, "No such document");
+                        }
+                    } else {
+                        Log.d(TAG, "get failed with ", task.getException());
+                    }
+                }
+            });
     }
 
     public void firebase_monthlyExternalFuelUpdate(double naturalGasBill, double fuelOilBill, double propaneBill) {
@@ -539,9 +566,9 @@ public class MainActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
 
-                            externalFuelsBool[0] = (boolean) document.getData().getOrDefault("naturalGas", false);
-                            externalFuelsBool[1] = (boolean) document.getData().getOrDefault("fuelOil", false);
-                            externalFuelsBool[2] = (boolean) document.getData().getOrDefault("propane", false);
+                            externalFuelsBoolGlobal[0] = (boolean) document.getData().getOrDefault("naturalGas", false);
+                            externalFuelsBoolGlobal[1] = (boolean) document.getData().getOrDefault("fuelOil", false);
+                            externalFuelsBoolGlobal[2] = (boolean) document.getData().getOrDefault("propane", false);
 
                         } else {
                             Log.d(TAG, "No such document");
@@ -648,7 +675,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void firebase_updateUserReferenceStats(boolean fuelOil, boolean propane, boolean naturalGas, double kwhPrice, double gasMileage) {
+    public void firebase_updateUserReferenceStats(boolean fuelOil, boolean propane, boolean naturalGas, double kwhPrice, double gasMileage, boolean[] recycleList) {
         Map<String, Object> toInsert = new HashMap<>();
         toInsert.put("fuelOil", fuelOil);
         toInsert.put("propane", propane);
@@ -668,6 +695,26 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "DocumentSnapshot successfully written!");
             }
         })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+
+
+        Map<String, Object> toInsert2 = new HashMap<>();
+        toInsert2.put("recycleComp", wasteFootprint(0, recycleList));
+
+
+        db.collection(getUserToken()).document("statistics").collection("nonDated").document("lastBreakdown")
+            .update(toInsert2)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
@@ -747,13 +794,13 @@ public class MainActivity extends AppCompatActivity {
 
     public double externalFuelsFootprint(int zip, double nGasUse, double oilUse, double propUse) {
         // TODO: fix to be based on bill price, using average american price.
-        if(!externalFuelsBool[0])
+        if(!externalFuelsBoolGlobal[0])
             nGasUse = 0;
 
-        if(!externalFuelsBool[1])
+        if(!externalFuelsBoolGlobal[1])
             oilUse = 0;
 
-        if(!externalFuelsBool[2])
+        if(!externalFuelsBoolGlobal[2])
             oilUse = 0;
 
         double totalHouseHoldFPrint = 0; //in tons
