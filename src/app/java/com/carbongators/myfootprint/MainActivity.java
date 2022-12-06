@@ -211,7 +211,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
     @MainThread
     public String getUserToken() {
 
@@ -231,6 +230,59 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public String getUserFullName() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("name")) {
+                try {
+                    return userInfo.getString("name");
+                } catch (JSONException e) {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    public String getUserEmail() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("email")) {
+                try {
+                    return userInfo.getString("email");
+                } catch (JSONException e) {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+    public String getUserImageURL() {
+
+        JSONObject userInfo = mUserInfoJson.get();
+
+        if (userInfo != null) {
+            if (userInfo.has("picture")) {
+                try {
+                    return userInfo.getString("picture");
+                } catch (JSONException e) {
+                    return null;
+                }
+            }
+        }
+
+        return null;
+
+    }
 
     @Override
     protected void onStart() {
@@ -325,6 +377,9 @@ public class MainActivity extends AppCompatActivity {
             String temp = "Hi, " + getUserFirstName();
 
             greetingText.setText(temp);
+
+            firebase_fetchAll();
+
         } catch (Exception E) {
 
         }
@@ -453,8 +508,6 @@ public class MainActivity extends AppCompatActivity {
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
-        firebase_fetchCarbonFootprintFromBreakdown();
-        Log.d(TAG, "Carbon Footprint: " + String.valueOf(carbonFootprintGlobal));
     }
 
     public void testButtonReference_onClick(View v) {
@@ -508,6 +561,7 @@ public class MainActivity extends AppCompatActivity {
         firebase_fetchExternalFuelBools();
         firebase_fetchKwhPrice();
         firebase_fetchGasMileage();
+        firebase_updateGoogleAccountInfo();
     }
 
     public void firebase_fetchCarbonFootprintFromBreakdown() {
@@ -606,6 +660,31 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+    }
+
+    public void firebase_updateGoogleAccountInfo() {
+        Map<String, Object> toInsert = new HashMap<>();
+        toInsert.put("email", getUserEmail());
+        toInsert.put("image", getUserImageURL());
+        toInsert.put("name", getUserFullName());
+
+
+        // Set the user's reference stats found in:
+        // (userTokenNumber listed as sub in Account page json)/statistics/nonDated/referenceStats
+        db.collection(getUserToken()).document("account")
+            .set(toInsert)
+            .addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            })
+            .addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
     }
 
 
