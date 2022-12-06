@@ -61,6 +61,8 @@
                     android:scheme="https" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".ReminderBroadcast"/>
     </application>
 
 </manifest>

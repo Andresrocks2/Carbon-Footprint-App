@@ -6,6 +6,98 @@
     android:layout_height="match_parent"
     tools:context=".ui.social.SocialFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Friends"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </LinearLayout>
+            </ScrollView>
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Statistics"
+                android:textColor="#000000"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView29"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:text="Your Global Percentile" />
+
+            <LinearLayout
+                android:id="@+id/PercentileChartHolder"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:text="Your Footprint compared to your friend averages" />
+
+            <LinearLayout
+                android:id="@+id/FriendAverageChartHolder"
+                android:layout_width="match_parent"
+                android:layout_height="62dp"
+                android:orientation="vertical"></LinearLayout>
+
+            <TextView
+                android:id="@+id/textView31"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:text="Leaders in all statistics" />
+
+            <LinearLayout
+                android:id="@+id/AllStatisticsHolder"
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:orientation="vertical"></LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
     <TextView
         android:id="@+id/text_social"
         android:layout_width="wrap_content"

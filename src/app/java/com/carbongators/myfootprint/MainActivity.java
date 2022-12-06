@@ -1,5 +1,9 @@
 package com.carbongators.myfootprint;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.graphics.Color;
 import android.os.Bundle;
 
@@ -26,11 +30,15 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.Nullable;
 import androidx.annotation.WorkerThread;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import net.openid.appauth.AppAuthConfiguration;
 import net.openid.appauth.AuthState;
@@ -55,11 +63,16 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
+<<<<<<< HEAD
 import java.lang.Math;
+=======
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+>>>>>>> BIll
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
 
@@ -87,12 +100,21 @@ public class MainActivity extends AppCompatActivity {
 
     // Default value is -1
     public int footPrint = -1;
+<<<<<<< HEAD
 
     LineChart lineChart;
 
     ArcGauge arcGauge;
     com.ekn.gruzer.gaugelibrary.Range range1, range2, range3;
 
+=======
+    /*
+    ArrayList<NewsArticleModel> newsArticleModels = new ArrayList<>();
+    ArrayList<TipModel> generalTips = new ArrayList<>();
+    ArrayList<TipModel> personalTips = new ArrayList<>();
+    int[] newsImages = {R.drawable.bill, R.drawable.marine};
+    */
+>>>>>>> BIll
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,9 +152,71 @@ public class MainActivity extends AppCompatActivity {
 
         // Change the text at the top of screen to say "Hi, " + user first name
         //DOES NOT WORK YET
+        //String greeting = "Hi, " + getUserFirstName();
+        //(TextView) findViewById(R.id.textView3)).setText(greeting);
+        //Notification to be sent when button6 is clicked
         String greeting = "Hi, " + "Andres";
         ((TextView) findViewById(R.id.textView3)).setText(greeting);
+        Button button6 = (Button) findViewById(R.id.button6);
+        createNotificationChannel();
+        button6.setOnClickListener(v -> {
+            ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
+            ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.questionsScreen);
+            gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
+            electricity = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal8)).getText().toString());
+            oil = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal9)).getText().toString());
+            propane = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal10)).getText().toString());
+            milesDriven = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal11)).getText().toString());
+            mileage = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal12)).getText().toString());
+            maintenance = ((CheckBox) findViewById(R.id.checkBox4)).isChecked();
 
+<<<<<<< HEAD
+=======
+            recyclable[0] = ((CheckBox) findViewById(R.id.checkBox2)).isChecked();
+            recyclable[1] = ((CheckBox) findViewById(R.id.checkBox3)).isChecked();
+            recyclable[2] = ((CheckBox) findViewById(R.id.checkBox5)).isChecked();
+            recyclable[3] = ((CheckBox) findViewById(R.id.checkBox6)).isChecked();
+            recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
+
+            footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
+
+            String footPrintString = ""+footPrint;
+            ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
+            ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+            homeScreen.setVisibility(View.VISIBLE);
+            questions.setVisibility(View.GONE);
+
+            Toast.makeText(this, "Data Entered!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this,ReminderBroadcast.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(MainActivity.this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+
+            AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            long timeAtButtonClick = System.currentTimeMillis();
+            long oneDayInMillis = 1000*86400;
+            alarmManager.set(AlarmManager.RTC_WAKEUP, timeAtButtonClick + oneDayInMillis, pendingIntent);
+
+        });
+        //News Article Setup
+        /*
+        RecyclerView recyclerView = findViewById(R.id.newsRecycler);
+        setUpNewsModels();
+        News_RecyclerViewAdapter adapter = new News_RecyclerViewAdapter(this, newsArticleModels, this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Tip Setup
+        RecyclerView dailyTipRecyclerView = findViewById(R.id.dailytips);
+        RecyclerView personalTipRecyclerView = findViewById(R.id.personaltips);
+        setUpTipModels();
+        Tip_RecyclerViewAdapter dailyTipAdapter = new Tip_RecyclerViewAdapter(this, generalTips);
+        Tip_RecyclerViewAdapter personalTipAdapter = new Tip_RecyclerViewAdapter(this, personalTips);
+        dailyTipRecyclerView.setAdapter(dailyTipAdapter);
+        dailyTipRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        personalTipRecyclerView.setAdapter(personalTipAdapter);
+        personalTipRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        */
+>>>>>>> BIll
     }
 
     @MainThread
@@ -285,6 +369,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        try {
+            TextView greetingText = (TextView) findViewById(R.id.textView3);
+
+            String temp = "Hi, " + getUserFirstName();
+
+            greetingText.setText(temp);
+        } catch (Exception E) {
+
+        }
         fetchUserInfo();
 
 
@@ -411,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
         homeScreen.setVisibility(View.GONE);
         questions.setVisibility(View.VISIBLE);
     }
-    public void button6_onClick(View v){
+    /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
         ConstraintLayout questions = (ConstraintLayout)findViewById(R.id.recyclingScreen);
         gas = Double.parseDouble(((EditText) findViewById(R.id.editTextNumberDecimal7)).getText().toString());
@@ -431,6 +524,7 @@ public class MainActivity extends AppCompatActivity {
         footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
         int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 10000));
 
+<<<<<<< HEAD
         arcGauge.setValue(score);
 
         Description desc = new Description();
@@ -483,6 +577,14 @@ public class MainActivity extends AppCompatActivity {
         transportationScreen.setVisibility(View.VISIBLE);
         recyclingScreen.setVisibility(View.GONE);
     }
+=======
+        String footPrintString = ""+footPrint;
+        ((TextView) findViewById(R.id.textView5)).setText(footPrintString);
+        ((TextView) findViewById(R.id.textView5)).setTextColor(Color.GREEN);
+        homeScreen.setVisibility(View.VISIBLE);
+        questions.setVisibility(View.GONE);
+    }*/
+>>>>>>> BIll
     public static double houseHoldFootprint(int zip, double nGasUse, double elecUse, double oilUse, double propUse)
     {
         double totalHouseHoldFPrint = 0; //in lbs
@@ -533,6 +635,7 @@ public class MainActivity extends AppCompatActivity {
         return totalOutput;
     }
 
+<<<<<<< HEAD
     private ArrayList<Entry> lineChartData() {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
         for(int i = 1; i <= 7; i++)
@@ -541,4 +644,71 @@ public class MainActivity extends AppCompatActivity {
         }
         return dataVals;
     }
+=======
+    //Notification Channel Method
+    private void createNotificationChannel() {
+        CharSequence name = "DailyInputReminderChannel";
+        String description = "Channel for Daily Input Reminder";
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel("notifyInputFootprint", name, importance);
+        channel.setDescription(description);
+        NotificationManager notificationManager = getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
+    }
+    /*
+    //News Article Setup
+    private void setUpNewsModels() {
+        String[] newsSources = getResources().getStringArray(R.array.news_source);
+        String[] articleTitles = getResources().getStringArray(R.array.article_titles);
+        String[] articleLinks = getResources().getStringArray(R.array.article_links);
+        for(int i = 0; i < newsSources.length; i++)
+        {
+            newsArticleModels.add(new NewsArticleModel(articleTitles[i], newsSources[i], newsImages[i], articleLinks[i]));
+        }
+    }*/
+    /*
+    @Override
+    public void onItemClick(int position) {
+        String s = newsArticleModels.get(position).getLink();
+        Uri uri = Uri.parse(s);
+        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+    }
+
+     */
+    /*
+    private void setUpTipModels() {
+        String[] tipText = getResources().getStringArray(R.array.tips);
+        String[] tipType = getResources().getStringArray(R.array.tip_category);
+        int[] tipImages = new int[tipText.length];
+        for(int i = 0; i < tipImages.length; i++)
+        {
+            if(tipType[i].equals("Energy"))
+            {
+                tipImages[i] = R.drawable.energy;
+            }
+            if(tipType[i].equals("Recycling"))
+            {
+                tipImages[i] = R.drawable.recycle;
+            }
+            if(tipType[i].equals("Transportation"))
+            {
+                tipImages[i] = R.drawable.transportation;
+            }
+        }
+        String date = java.time.LocalDate.now().toString();
+        int shift = Integer.parseInt(date.substring(date.length()-2));
+        for(int i = 0; i < 3; i++)
+        {
+            generalTips.add(new TipModel(tipText[(7*i+shift) % 10], tipType[(7*i+shift) % 10], tipImages[(7*i+shift) % 10]));
+            personalTips.add(new TipModel(tipText[(7*i+shift+1) % 10], tipType[(7*i+shift+1) % 10], tipImages[(7*i+shift+1) % 10]));
+        }
+    }
+
+     *//*
+    public void news_onClick(View v){
+        String s = newsArticleModels.get(pos);
+        Uri uri = Uri.parse(s);
+        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+    }*/
+>>>>>>> BIll
 }
