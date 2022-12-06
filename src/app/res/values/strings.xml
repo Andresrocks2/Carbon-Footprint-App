@@ -35,12 +35,45 @@
     <string name="title_social">Social</string>
     <string name="title_account">Account</string>
 
+    <string-array name="tips">
+        <item>While the AC is on, shut the windows to save energy!</item>
+        <item>If possible, try taking shorter showers!</item>
+        <item>Turn off the lights when they are not needed!</item>
+        <item>Switch to LED Bulbs for more efficient energy use!</item>
+        <item>AC is usually the greatest energy consumer in a household, try
+            to keep the room temperature moderate!</item>
+        <item>Try to reuse as many items as you can to reduce waste!</item>
+        <item>Printing double sided can reduce paper waste!</item>
+        <item>Try recycling items like aluminum, paper, plastics, and
+            cardboard!</item>
+        <item>Decrease your transportation carbon footprint by walking
+            taking public transportation, or riding a bike!</item>
+        <item>Performing maintenance on your vehicle can decrease its
+            carbon output!</item>
+    </string-array>
+    <string-array name="tip_category">
+        <item>Energy</item>
+        <item>Energy</item>
+        <item>Energy</item>
+        <item>Energy</item>
+        <item>Energy</item>
+        <item>Recycling</item>
+        <item>Recycling</item>
+        <item>Recycling</item>
+        <item>Transportation</item>
+        <item>Transportation</item>
+    </string-array>
+
     <string-array name="news_source">
-        <item>CNBC</item>
+        <item>EE News</item>
         <item>SciTechDaily</item>
     </string-array>
     <string-array name="article_titles">
         <item>New plastics bill emphasizes climate change, justice</item>
         <item>Does Marine Conservation Mitigate Climate Change?</item>
+    </string-array>
+    <string-array name="article_links">
+        <item>https://www.eenews.net/articles/new-plastics-bill-emphasizes-climate-change-justice/</item>
+        <item>https://scitechdaily.com/does-marine-conservation-mitigate-climate-change/</item>
     </string-array>
 </resources>

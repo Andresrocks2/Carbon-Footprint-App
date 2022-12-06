@@ -3,12 +3,14 @@ package com.carbongators.myfootprint;
 public class NewsArticleModel {
     String articleTitle;
     String newsSource;
+    String link;
     int image;
 
 
-    public NewsArticleModel(String articleTitle, String newsSource, int image) {
+    public NewsArticleModel(String articleTitle, String newsSource, int image, String link) {
         this.articleTitle = articleTitle;
         this.newsSource = newsSource;
+        this.link = link;
         this.image = image;
     }
 
@@ -23,4 +25,6 @@ public class NewsArticleModel {
     public int getImage() {
         return image;
     }
+
+    public String getLink() { return link; }
 }

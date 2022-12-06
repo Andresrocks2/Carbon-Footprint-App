@@ -97,17 +97,10 @@
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textView26"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dailytips"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tip 1" />
-
-                <TextView
-                    android:id="@+id/textView25"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tip 2" />
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:id="@+id/textView16"
@@ -118,17 +111,10 @@
                     android:textColor="#000000"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/textView24"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/personaltips"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tip 1" />
-
-                <TextView
-                    android:id="@+id/textView23"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Tip 2" />
+                    android:layout_height="match_parent" />
 
                 <TextView
                     android:id="@+id/textView17"

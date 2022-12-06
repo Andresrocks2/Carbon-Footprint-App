@@ -55,10 +55,12 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import com.carbongators.myfootprint.databinding.ActivityMainBinding;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
 
     private ActivityMainBinding binding;
 
@@ -86,8 +88,12 @@ public class MainActivity extends AppCompatActivity {
 
     // Default value is -1
     public int footPrint = -1;
+    /*
     ArrayList<NewsArticleModel> newsArticleModels = new ArrayList<>();
+    ArrayList<TipModel> generalTips = new ArrayList<>();
+    ArrayList<TipModel> personalTips = new ArrayList<>();
     int[] newsImages = {R.drawable.bill, R.drawable.marine};
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -171,11 +177,24 @@ public class MainActivity extends AppCompatActivity {
 
         });
         //News Article Setup
+        /*
         RecyclerView recyclerView = findViewById(R.id.newsRecycler);
         setUpNewsModels();
-        News_RecyclerViewAdapter adapter = new News_RecyclerViewAdapter(this, newsArticleModels);
+        News_RecyclerViewAdapter adapter = new News_RecyclerViewAdapter(this, newsArticleModels, this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //Tip Setup
+        RecyclerView dailyTipRecyclerView = findViewById(R.id.dailytips);
+        RecyclerView personalTipRecyclerView = findViewById(R.id.personaltips);
+        setUpTipModels();
+        Tip_RecyclerViewAdapter dailyTipAdapter = new Tip_RecyclerViewAdapter(this, generalTips);
+        Tip_RecyclerViewAdapter personalTipAdapter = new Tip_RecyclerViewAdapter(this, personalTips);
+        dailyTipRecyclerView.setAdapter(dailyTipAdapter);
+        dailyTipRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        personalTipRecyclerView.setAdapter(personalTipAdapter);
+        personalTipRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        */
     }
 
     @MainThread
@@ -524,15 +543,59 @@ public class MainActivity extends AppCompatActivity {
         NotificationManager notificationManager = getSystemService(NotificationManager.class);
         notificationManager.createNotificationChannel(channel);
     }
-
+    /*
     //News Article Setup
     private void setUpNewsModels() {
         String[] newsSources = getResources().getStringArray(R.array.news_source);
         String[] articleTitles = getResources().getStringArray(R.array.article_titles);
-
+        String[] articleLinks = getResources().getStringArray(R.array.article_links);
         for(int i = 0; i < newsSources.length; i++)
         {
-            newsArticleModels.add(new NewsArticleModel(articleTitles[i], newsSources[i], newsImages[i]));
+            newsArticleModels.add(new NewsArticleModel(articleTitles[i], newsSources[i], newsImages[i], articleLinks[i]));
+        }
+    }*/
+    /*
+    @Override
+    public void onItemClick(int position) {
+        String s = newsArticleModels.get(position).getLink();
+        Uri uri = Uri.parse(s);
+        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+    }
+
+     */
+    /*
+    private void setUpTipModels() {
+        String[] tipText = getResources().getStringArray(R.array.tips);
+        String[] tipType = getResources().getStringArray(R.array.tip_category);
+        int[] tipImages = new int[tipText.length];
+        for(int i = 0; i < tipImages.length; i++)
+        {
+            if(tipType[i].equals("Energy"))
+            {
+                tipImages[i] = R.drawable.energy;
+            }
+            if(tipType[i].equals("Recycling"))
+            {
+                tipImages[i] = R.drawable.recycle;
+            }
+            if(tipType[i].equals("Transportation"))
+            {
+                tipImages[i] = R.drawable.transportation;
+            }
+        }
+        String date = java.time.LocalDate.now().toString();
+        int shift = Integer.parseInt(date.substring(date.length()-2));
+        for(int i = 0; i < 3; i++)
+        {
+            generalTips.add(new TipModel(tipText[(7*i+shift) % 10], tipType[(7*i+shift) % 10], tipImages[(7*i+shift) % 10]));
+            personalTips.add(new TipModel(tipText[(7*i+shift+1) % 10], tipType[(7*i+shift+1) % 10], tipImages[(7*i+shift+1) % 10]));
         }
     }
+
+     *//*
+    public void news_onClick(View v){
+        String s = newsArticleModels.get(pos);
+        Uri uri = Uri.parse(s);
+        startActivity(new Intent(Intent.ACTION_VIEW,uri));
+    }*/
 }
