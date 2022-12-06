@@ -449,7 +449,11 @@ public class MainActivity extends AppCompatActivity {
         questions.setVisibility(View.VISIBLE);
     }
 
-    public void testbutton_onclick(View v){
+    public void firebaseSample_reference(View v) {
+
+    }
+
+    public void firebaseSample_weekly(View v){
         Map<String, Object> user = new HashMap<>();
         user.put("first", "Ada");
         user.put("last", "Lovelace");
@@ -473,6 +477,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
     }
+
 
     /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
