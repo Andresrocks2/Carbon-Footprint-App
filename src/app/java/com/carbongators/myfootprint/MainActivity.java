@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity{
             recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
 
             footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
-            int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 10000));
+            int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 1000));
 
 
             arcGauge.setValue(score);
@@ -622,12 +622,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    /*
-    public void button6_onClick(View v) {
-    }
-    */
-    }
-
     public void testButtonReference_onClick(View v) {
         firebase_updateUserReferenceStats(false, true, true, 0.112, 24, new boolean[]{false, false, true, false, false});
         //firebase_sendFriendRequest("jackschedel@gmail.com");
@@ -1022,7 +1016,10 @@ public class MainActivity extends AppCompatActivity{
                 }
             });
     }
+    //Empty function so theres something to call without crashing
+    public void button6_onClick(View v){
 
+    }
 
     /*public void button6_onClick(View v){
         ConstraintLayout homeScreen = (ConstraintLayout)findViewById(R.id.homeScreen);
