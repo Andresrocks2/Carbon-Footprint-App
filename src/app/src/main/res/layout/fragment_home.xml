@@ -113,7 +113,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/dailytips"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="50dp" />
 
 
                 <TextView
@@ -129,7 +130,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/personaltips"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="50dp" />
 
                 <TextView
                     android:id="@+id/textView26"
