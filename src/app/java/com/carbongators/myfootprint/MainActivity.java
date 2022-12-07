@@ -105,34 +105,34 @@ public class MainActivity extends AppCompatActivity{
     public final AtomicReference<JSONObject> mUserInfoJson = new AtomicReference<>();
     private ExecutorService mExecutor;
     private Configuration mConfiguration;
-    public double gasMileageGlobal = 0.0;
-    public double kwhPriceGlobal = 0.0;
-    public double carbonFootprintGlobal = 0.0;
-    public boolean[] externalFuelsBoolGlobal = {false, false, false};
-    public boolean hasDoneInitialFetch = false;
+    private double gasMileageGlobal = 0.0;
+    private double kwhPriceGlobal = 0.0;
+    private double carbonFootprintGlobal = 0.0;
+    private boolean[] externalFuelsBoolGlobal = {false, false, false};
+    private boolean hasDoneInitialFetch = false;
 
-    public List<String> friendsListTokens;
-    public List<String> friendsListNames;
-    public List<String> friendsListImages;
-    public List<Boolean> friendsListIsFriendNotInvite;
-    public List<Double> friendsListDrivingBreakdown;
-    public List<Double> friendsListElecBreakdown;
-    public List<Double> friendsListOtherBreakdown;
+    private List<String> friendsListTokens;
+    private List<String> friendsListNames;
+    private List<String> friendsListImages;
+    private List<Boolean> friendsListIsFriendNotInvite;
+    private List<Double> friendsListDrivingBreakdown;
+    private List<Double> friendsListElecBreakdown;
+    private List<Double> friendsListOtherBreakdown;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     // Global variables to calculate carbon footprint
-    public double gas = 0;
-    public double electricity = 0;
-    public double oil = 0;
-    public double propane= 0;
-    public double milesDriven= 0;
-    public double mileage= 0;
-    public boolean maintenance;
-    public boolean[] recyclable = new boolean[5];
+    private double gas = 0;
+    private double electricity = 0;
+    private double oil = 0;
+    private double propane= 0;
+    private double milesDriven= 0;
+    private double mileage= 0;
+    private boolean maintenance;
+    private boolean[] recyclable = new boolean[5];
 
     // Default value is -1
-    public int footPrint = -1;
+    private int footPrint = -1;
 
 
     LineChart lineChart;
@@ -1149,7 +1149,6 @@ public class MainActivity extends AppCompatActivity{
     }
 
     public double externalFuelsFootprint(int zip, double nGasUse, double oilUse, double propUse) {
-        // TODO: fix to be based on bill price, using average american price.
         if(!externalFuelsBoolGlobal[0])
             nGasUse = 0;
 

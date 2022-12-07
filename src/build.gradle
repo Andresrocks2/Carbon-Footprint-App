@@ -22,11 +22,6 @@ buildscript {
 
 apply plugin: "org.sonarqube"
 
-sonarqube {
-    properties {
-        property "sonar.exclusions", "**/*Generated.java"
-    }
-}
 
 subprojects {
     repositories {
