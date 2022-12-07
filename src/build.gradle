@@ -6,6 +6,9 @@ buildscript {
     repositories {
         gradlePluginPortal()
         google()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
@@ -13,8 +16,11 @@ buildscript {
         classpath 'org.jacoco:org.jacoco.core:0.8.7'
         classpath 'com.google.gms:google-services:4.3.14'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:3.5.0.2730"
     }
 }
+
+apply plugin: "org.sonarqube"
 
 subprojects {
     repositories {
