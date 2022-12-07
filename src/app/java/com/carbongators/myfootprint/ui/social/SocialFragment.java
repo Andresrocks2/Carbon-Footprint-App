@@ -58,7 +58,7 @@ public class SocialFragment extends Fragment implements FriendRecyclerInterface 
     private void setUpFriendModels() {
         String[] friendNames = {"Beau Phid", "Barry Dee"};
         String[] friendEmails = {"neezduts@gmail.com", "samirjames@gmail.com"};
-        String[] friendCodes = {"696969", "123546"};
+        String[] friendCodes = {"690.0", "420.0"};
         int[] images = {R.drawable.unknown_user_48dp, R.drawable.ic_baseline_android_24};
         for(int i = 0; i < friendNames.length; i++)
             friendModels.add(new FriendModel(friendNames[i], friendEmails[i], friendCodes[i], images[i]));

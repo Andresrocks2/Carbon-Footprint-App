@@ -211,7 +211,7 @@ public class MainActivity extends AppCompatActivity{
             recyclable[4] = ((CheckBox) findViewById(R.id.checkBox7)).isChecked();
 
             footPrint = calcTotalFootprint(11111, gas, electricity, oil, propane, milesDriven, mileage, maintenance, recyclable);
-            int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 1000));
+            int score = 1000 - (int)(636 * Math.atan(1.0 * footPrint / 100));
 
 
             arcGauge.setValue(score);
@@ -219,7 +219,7 @@ public class MainActivity extends AppCompatActivity{
             Description desc = new Description();
             desc.setText("");
             lineChart = (LineChart) findViewById(R.id.lineChart);
-            LineDataSet lineDataSet = new LineDataSet(lineChartData(),"Your score over the last 7 days");
+            LineDataSet lineDataSet = new LineDataSet(lineChartData(score),"Your score over the last 7 days");
             ArrayList<ILineDataSet> dataSets = new ArrayList<>();
             dataSets.add(lineDataSet);
             LineData data = new LineData(dataSets);
@@ -1177,12 +1177,15 @@ public class MainActivity extends AppCompatActivity{
     }
 
 
-    private ArrayList<Entry> lineChartData() {
+    private ArrayList<Entry> lineChartData(int a) {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
-        for(int i = 1; i <= 7; i++)
-        {
-            dataVals.add(new Entry(i, i * i));
-        }
+        dataVals.add(new Entry(1, 250));
+        dataVals.add(new Entry(2, 350));
+        dataVals.add(new Entry(3, 500));
+        dataVals.add(new Entry(4, 400));
+        dataVals.add(new Entry(5, 450));
+        dataVals.add(new Entry(6, 400));
+        dataVals.add(new Entry(7, a));
         return dataVals;
     }
 
