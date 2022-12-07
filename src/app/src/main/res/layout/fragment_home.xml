@@ -510,7 +510,6 @@
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimary"
                     android:fontFamily="sans-serif-light"
-                    android:onClick="button6_onClick"
                     android:text="Calculate!"
                     android:textSize="25sp" />
             </LinearLayout>
